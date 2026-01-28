@@ -17,6 +17,7 @@ const staff = [
 
 export default function Home() {
   const token = localStorage.getItem("tspc_token");
+  const isMobile = window.innerWidth < 768;
 
   const [loaded, setLoaded] = useState(!!token);
   const [showPage, setShowPage] = useState(!!token);
@@ -425,7 +426,7 @@ if (!loaded) {
 
 {/* HERO – GOD MODE ELITE (PRO / SOBRIO / IMPACTANTE) */}
 
-<section className="relative min-h-screen flex items-center px-6 sm:px-10 md:px-24 pt-28 md:pt-32 overflow-hidden bg-black">
+<section className="relative min-h-[100svh] flex items-center px-6 sm:px-10 md:px-24 pt-28 md:pt-32 overflow-hidden bg-black">
       {/* REACTIVE BACKGROUND */}
       <div
         className="absolute inset-0 transition-transform duration-300"

@@ -840,15 +840,21 @@ if (!loaded) {
         DEPLOYMENT ACCESS
       </span>
 
-      {/* TITLE */}
-      <h2 className="text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold mb-6 leading-tight">
-        ¿Listo para dominar los{" "}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7B2CFF] via-white to-[#7B2CFF]">
-          torneos
-        </span>
-        <br className="hidden sm:block" />
-        como un profesional?
-      </h2>
+<h2 className="
+text-[clamp(1.7rem,6vw,3.2rem)]
+sm:text-[clamp(2.2rem,5vw,3.6rem)]
+font-extrabold
+mb-6
+leading-tight
+text-balance
+">
+¿Listo para dominar los{" "}
+<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7B2CFF] via-white to-[#7B2CFF]">
+torneos
+</span>
+<br className="hidden sm:block" />
+como un profesional?
+</h2>
 
       {/* DESCRIPTION */}
       <p className="text-white/70 text-base md:text-lg max-w-2xl mx-auto mb-14">

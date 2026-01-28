@@ -1,4 +1,4 @@
-"use client";
+
 import React, { useRef, useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 

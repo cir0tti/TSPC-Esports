@@ -385,7 +385,7 @@ if (!loaded) {
       <button
         onClick={() => {
           setMenuOpen(false);
-          window.location.href = "/buy";
+          window.location.href = "/pricing";
         }}
         className="w-full py-4 rounded-xl font-extrabold uppercase tracking-[0.3em]
         text-black bg-gradient-to-r from-[#FF7A00] via-[#FFB347] to-[#7B2CFF]
@@ -513,15 +513,25 @@ if (!loaded) {
           })}
         </div>
 
-        {/* CTA */}
-        <div className="flex flex-col sm:flex-row gap-6 mt-20">
-          <button className="px-10 py-3.5 bg-[#7B2CFF] text-black font-black uppercase tracking-[0.3em] rounded-md shadow-[0_0_50px_rgba(123,44,255,0.6)] hover:bg-[#FF7A00] transition">
-            Inscribirse
-          </button>
-          <button className="px-10 py-3.5 border border-white/20 text-white uppercase tracking-[0.3em] rounded-md hover:border-[#FF7A00] hover:text-[#FF7A00] transition">
-            Ver en vivo
-          </button>
-        </div>
+{/* CTA */}
+<div className="flex flex-col sm:flex-row gap-6 mt-20">
+<Link
+to="/pricing"
+className="px-10 py-3.5 bg-[#7B2CFF] text-black font-black uppercase tracking-[0.3em] rounded-md shadow-[0_0_50px_rgba(123,44,255,0.6)] hover:bg-[#FF7A00] transition text-center"
+>
+Inscribirse
+</Link>
+
+
+<Link
+to="/livestreams"
+className="px-10 py-3.5 border border-white/20 text-white uppercase tracking-[0.3em] rounded-md hover:border-[#FF7A00] hover:text-[#FF7A00] transition text-center"
+>
+Ver en vivo
+</Link>
+
+
+</div>
       </motion.div>
 
       {/* RIGHT CORE – SIGNATURE */}

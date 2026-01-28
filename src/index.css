@@ -510,11 +510,6 @@ a {
   animation: coreBreath 4s ease-in-out infinite;
 }
 
-@keyframes spin-slower {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .animate-spin-slower {
   animation: spin-slower 18s linear infinite;
 }
@@ -560,4 +555,67 @@ background-color: #050507;
 margin: 0;
 padding: 0;
 overflow-x: hidden;
+}
+
+/* ===============================
+🚀 PERF FIX FINAL
+================================ */
+
+
+* {
+backface-visibility: hidden;
+}
+
+
+.animate-glow,
+.animate-coreBreath,
+.animate-energyFlow {
+will-change: transform, opacity;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+* {
+animation: none !important;
+transition: none !important;
+}
+}
+
+@media (max-width: 768px) {
+  .animate-float,
+  .animate-float-slow,
+  .animate-spin-slow,
+  .animate-spin-reverse,
+  .animate-spin-slower,
+  .animate-spin-reverse-slow,
+  .animate-glow,
+  .animate-scan,
+  .animate-scanlines,
+  .animate-energyFlow,
+  .animate-coreBreath {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .scanlines {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .text-neon {
+    text-shadow: 0 0 6px rgba(123,44,255,0.5);
+  }
+
+  .animate-valuePulse,
+  .animate-statPulse {
+    animation: none;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
 }

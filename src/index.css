@@ -1,0 +1,556 @@
+/* ===============================
+   🔤 FUENTES
+================================ */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap");
+
+/* ===============================
+   🧩 TAILWIND
+================================ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===============================
+   🌍 RESET GLOBAL
+================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #050507;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  color: #ffffff;
+  letter-spacing: 0.015em;
+  overflow-x: hidden;
+  cursor: auto; /* cursor gamer */
+}
+
+/* ===============================
+   🧠 TIPOGRAFÍA
+================================ */
+h1,
+h2,
+h3,
+.section-title {
+  font-family: "Orbitron", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ui-text {
+  font-family: "Rajdhani", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* ===============================
+   🎮 SCROLLBAR ESPORTS (PRO)
+================================ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7b2cff, #ff7a00);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050507;
+}
+
+/* ===============================
+   🌀 LENIS FIX
+================================ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* ===============================
+   🧊 HUD / CARDS (PREMIUM)
+================================ */
+.hud-card {
+  background: linear-gradient(180deg, #0b0f14, #050507);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  transition:
+    transform 0.45s ease,
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
+}
+
+.hud-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(123, 44, 255, 0.5);
+  box-shadow: 0 0 45px rgba(123, 44, 255, 0.35);
+}
+
+/* ===============================
+   🌌 CARDS VISUALES / GALERÍA
+================================ */
+.card-hover {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s ease;
+}
+
+.card-hover:hover {
+  transform: scale(1.035);
+  box-shadow: 0 0 55px rgba(255, 122, 0, 0.25);
+}
+
+.card-hover img {
+  transition: transform 0.8s ease;
+}
+
+.card-hover:hover img {
+  transform: scale(1.12);
+}
+
+.card-hover .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 45%,
+    rgba(0, 0, 0, 0.9)
+  );
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.card-hover:hover .overlay {
+  opacity: 1;
+}
+
+/* ===============================
+   ✨ TEXTO NEÓN (CONTROLADO)
+================================ */
+.text-neon {
+  color: #7b2cff;
+  text-shadow:
+    0 0 8px rgba(123, 44, 255, 0.7),
+    0 0 22px rgba(123, 44, 255, 0.45);
+}
+
+/* ===============================
+   🎥 KEYFRAMES
+================================ */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-16px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 18px rgba(123, 44, 255, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(255, 122, 0, 0.55);
+  }
+}
+
+/* ===============================
+   🎬 CLASES DE ANIMACIÓN
+================================ */
+.animate-fade-up {
+  animation: fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-float {
+  animation: float 6.5s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow-pulse 3.8s ease-in-out infinite;
+}
+
+/* ===============================
+   ⚡ MICRO OPTIMIZACIONES
+================================ */
+img,
+video {
+  user-select: none;
+  pointer-events: none;
+}
+
+button,
+a {
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+@keyframes gradient-x {
+  0%,100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient-x {
+  background-size: 300% 300%;
+  animation: gradient-x 8s ease infinite;
+}
+
+@keyframes scan {
+  0% { background-position-y: 0; }
+  100% { background-position-y: 100%; }
+}
+.animate-scan {
+  animation: scan 6s linear infinite;
+}
+
+.staff-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.staff-icon {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  padding: 2px;
+  background: radial-gradient(circle, var(--glow), transparent 65%);
+  transition: transform 0.3s ease;
+}
+
+.staff-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.staff-icon:hover {
+  transform: scale(1.15);
+}
+
+.staff-tooltip {
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(0,0,0,0.85);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+}
+
+.staff-icon:hover .staff-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.staff-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+
+.staff-role {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #7B2CFF;
+}
+
+
+@keyframes spin-slower {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse-slow {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-slower {
+  animation: spin-slower 38s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+  animation: spin-reverse-slow 55s linear infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 6s ease-in-out infinite;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform-origin: top left;
+  will-change: transform;
+}
+
+.custom-cursor svg {
+  filter: drop-shadow(0 0 6px rgba(123, 44, 255, 0.45));
+}
+
+.hud-card {
+  background: linear-gradient(180deg, #0b0f14, #050507);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  transition: all .45s ease;
+}
+
+.hud-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 0 45px rgba(123,44,255,.35);
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float 7s ease-in-out infinite;
+}
+
+.scanlines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    rgba(123,44,255,0.06) 1px,
+    transparent 3px
+  );
+  animation: scanMove 8s linear infinite;
+}
+
+@keyframes scanMove {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinReverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 14s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spinReverse 10s linear infinite;
+}
+
+.scanlines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    rgba(123,44,255,0.06) 1px,
+    transparent 3px
+  );
+  animation: scanMove 8s linear infinite;
+}
+
+@keyframes scanMove {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 14s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spinReverse 10s linear infinite;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinReverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.hud {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: rgba(123,44,255,0.6);
+}
+
+.hud-top-left { position: absolute; top: 20px; left: 20px; }
+.hud-top-right { position: absolute; top: 20px; right: 20px; }
+.hud-bottom-left { position: absolute; bottom: 20px; left: 20px; }
+.hud-bottom-right { position: absolute; bottom: 20px; right: 20px; }
+
+
+@keyframes scanlines {
+  from { background-position-y: 0; }
+  to { background-position-y: 100%; }
+}
+
+.animate-scanlines {
+  animation: scanlines 6s linear infinite;
+}
+
+@keyframes valuePulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(123,44,255,0.6); }
+  50% { text-shadow: 0 0 40px rgba(123,44,255,1); }
+}
+
+.animate-valuePulse {
+  animation: valuePulse 2.8s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 10s ease-in-out infinite;
+}
+
+.animate-pulse-slower {
+  animation: pulse 14s ease-in-out infinite;
+}
+
+@keyframes statPulse {
+  0%, 100% {
+    text-shadow: 0 0 18px rgba(123,44,255,0.5);
+  }
+  50% {
+    text-shadow: 0 0 45px rgba(123,44,255,1);
+  }
+}
+
+.animate-statPulse {
+  animation: statPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes energyFlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.animate-energyFlow {
+  background-size: 200% 200%;
+  animation: energyFlow 14s linear infinite;
+}
+
+@keyframes coreBreath {
+  0%, 100% {
+    filter: drop-shadow(0 0 30px rgba(123,44,255,0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 70px rgba(123,44,255,1));
+  }
+}
+
+.animate-coreBreath {
+  animation: coreBreath 4s ease-in-out infinite;
+}
+
+@keyframes spin-slower {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slower {
+  animation: spin-slower 18s linear infinite;
+}
+
+@keyframes spin-reverse-slow {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-reverse-slow {
+  animation: spin-reverse-slow 26s linear infinite;
+}
+.scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.05) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  width: 100%;
+  height: 100%;
+}
+
+.animate-spin-slow {
+  animation: spin 14s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+  to { transform: rotate(-360deg); }
+}

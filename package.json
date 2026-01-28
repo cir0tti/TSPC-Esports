@@ -1,0 +1,32 @@
+{
+  "name": "vortex-ultra",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.107.2",
+    "@react-three/fiber": "^8.15.10",
+    "@studio-freight/lenis": "^1.0.42",
+    "canvas-confetti": "^1.9.4",
+    "framer-motion": "^12.29.2",
+    "gsap": "^3.13.0",
+    "lottie-react": "^2.4.0",
+    "lucide-react": "^0.563.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.12.0",
+    "three": "^0.168.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "vite": "^5.4.9"
+  }
+}

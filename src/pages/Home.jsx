@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Preloader from "../components/Preloader";
 import gsap from "gsap";
+import { useAuth } from "../context/AuthContext";
+import UserMenu from "../components/UserMenu";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { testimonials } from "../data/testimonials";
 import Lenis from "@studio-freight/lenis";
@@ -18,412 +21,45 @@ const staff = [
 export default function Home() {
   const token = localStorage.getItem("tspc_token");
   const isMobile = window.innerWidth < 768;
+  const { user, logout } = useAuth();
+  const [fromLogin, setFromLogin] = useState(false);
+  const [showPreloader, setShowPreloader] = useState(false);
 
-  const [loaded, setLoaded] = useState(!!token);
-  const [showPage, setShowPage] = useState(!!token);
+  const [loaded, setLoaded] = useState(false);
+  const [showPage, setShowPage] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
 
 
-  useEffect(() => {
-    // 👉 SI VIENE LOGEADO, NO EJECUTAR PRELOADER NI GSAP
-    if (token) return;
+useEffect(() => {
+  const fromLogin = localStorage.getItem("tspc:fromLogin");
 
-  /* ---------------- LENIS ---------------- */
-  const lenis = new Lenis({ smoothWheel: true, duration: 1.15 });
+  if (fromLogin === "true") {
+    setShowPreloader(true);
+    setShowPage(false);
 
-  let lenisRaf;
-  const raf = (time) => {
-    lenis.raf(time);
-    lenisRaf = requestAnimationFrame(raf);
-  };
-  lenisRaf = requestAnimationFrame(raf);
+    // 🔥 CONSUMIR EL FLAG (ESTO ES LO QUE TE FALTABA)
+    localStorage.removeItem("tspc:fromLogin");
+  } else {
+    setShowPage(true);
+  }
+}, []);
 
-/* ---------------- PRELOADER : ESCANEO DE ACCESO ---------------- */
-const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-
-tl
-  // Encendido
-  .fromTo(".preloader", { opacity: 0 }, { opacity: 1, duration: 0.4 })
-
-  // Logo
-  .fromTo(
-    ".pre-logo",
-    { scale: 0.35, opacity: 0, filter: "blur(20px)" },
-    { scale: 1, opacity: 1, filter: "blur(0px)", duration: 1.4 }
-  )
-
-  // Anillos
-  .fromTo(".ring-outer", { opacity: 0 }, { opacity: 1, duration: 0.6 }, "-=1")
-  .fromTo(".ring-inner", { opacity: 0 }, { opacity: 1, duration: 0.6 }, "-=0.8")
-
-  // HUD
-  .fromTo(".hud", { opacity: 0 }, { opacity: 1, duration: 0.4 })
-
-  // Texto inicial
-  .fromTo(
-    ".pre-text",
-    { opacity: 0, y: 14 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.6,
-      onStart: () => {
-        document.querySelector(".pre-text").innerText =
-          "ESCANEANDO CREDENCIALES";
-      },
-    }
-  )
-
-  // ESCÁNER BIOMÉTRICO
-  .fromTo(
-    ".scanner-line",
-    { y: "-120%", opacity: 0 },
-    {
-      y: "120%",
-      opacity: 1,
-      duration: 1.4,
-      ease: "linear",
-      repeat: 1,
-      yoyo: true,
-    },
-    "+=0.4"
-  )
-
-  // VALIDACIÓN
-  .to(".pre-text", {
-    duration: 0.4,
-    onStart: () => {
-      document.querySelector(".pre-text").innerText =
-        "VALIDANDO ACCESO";
-    },
-  })
-
-  // ACCESO CONCEDIDO
-  .to(".pre-text", {
-    duration: 0.4,
-    delay: 0.6,
-    onStart: () => {
-      document.querySelector(".pre-text").innerText =
-        "ACCESO CONCEDIDO";
-    },
-  })
-
-  // Pulso de aprobación
-  .to(".pre-logo", {
-    scale: 1.12,
-    duration: 0.45,
-    boxShadow: "0 0 90px #22d3ee",
-  })
-
-  // SALIDA – DESPLIEGUE
-  .to(".preloader", {
-    opacity: 0,
-    scale: 1.35,
-    filter: "blur(18px)",
-    duration: 0.9,
-    ease: "power4.in",
-    onComplete: () => {
-      setLoaded(true);
-      setTimeout(() => setShowPage(true), 60);
-    },
-  });
-
-  return () => {
-    cancelAnimationFrame(lenisRaf);
-    lenis.destroy();
-  };
-}, [token]);
-
-
-  /* ---------------- PRELOADER ---------------- */
-if (!loaded) {
-  return (
-    <div className="preloader fixed inset-0 bg-black z-[9999] overflow-hidden flex items-center justify-center">
-
-      {/* SCANLINES */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="scanlines"></div>
-      </div>
-
-      {/* LÍNEA DE ESCÁNER */}
-      <div className="scanner-line absolute inset-x-0 h-[3px]
-                      bg-gradient-to-r from-transparent via-cyan-400 to-transparent
-                      opacity-70" />
-
-      {/* HUD */}
-      <div className="hud absolute inset-0 text-[10px] tracking-widest text-white/40 font-semibold pointer-events-none">
-        <span className="absolute top-6 left-6">NODO: TSPC</span>
-        <span className="absolute top-6 right-6">SEGURIDAD: ACTIVA</span>
-        <span className="absolute bottom-6 left-6">PROTOCOLO: WARZONE</span>
-        <span className="absolute bottom-6 right-6">ESTADO: VERIFICANDO</span>
-      </div>
-
-      {/* NÚCLEO */}
-      <div className="relative flex flex-col items-center">
-
-        {/* ANILLOS */}
-        <div className="ring-outer absolute w-64 h-64 rounded-full border border-fuchsia-500/25 animate-spin-slow" />
-        <div className="ring-inner absolute w-44 h-44 rounded-full border border-cyan-400/40 animate-spin-reverse" />
-
-        {/* LOGO */}
-        <img
-          src="/tspc-logo.jpg"
-          className="pre-logo w-36 relative z-10
-                     drop-shadow-[0_0_55px_#22d3ee]"
-        />
-
-        {/* TEXTO */}
-        <span className="pre-text mt-10 text-[11px] tracking-[0.45em]
-                         text-cyan-400 uppercase font-semibold">
-          INICIALIZANDO SISTEMA
-        </span>
-      </div>
-    </div>
-  );
-}
-
-  return (
-    <main
-      className={`bg-[#050507] text-white overflow-x-hidden font-['Rajdhani'] transition-opacity duration-700 ${
-        showPage ? "opacity-100" : "opacity-0"
-      }`}
-    >
-{/* HEADER */}
-<header className="fixed top-0 left-0 w-full z-40 backdrop-blur-xl bg-black/60 border-b border-white/10">
-  <div className="relative flex items-center px-6 md:px-24 h-16">
-
-    {/* LOGO */}
-    <img src="/tspc-logo.jpg" className="w-24" alt="TSPC Logo" />
-
-{/* NAV DESKTOP — COMMAND BAR */}
-<nav
-  className="hidden md:flex items-center gap-10
-  px-10 py-3
-  absolute left-1/2 -translate-x-1/2
-  rounded-full
-  bg-black/40 backdrop-blur-xl
-  border border-white/10
-  shadow-[0_0_40px_rgba(0,0,0,0.6)]
-"
->
-  {[
-    { label: "Torneos", color: "#7B2CFF" },
-    { label: "Rankings", color: "#7B2CFF" },
-    { label: "Equipos", color: "#7B2CFF" },
-    { label: "Livestreams", to: "/livestreams", color: "#FF7A00" },
-    { label: "Ruleta", to: "/ruleta", color: "#00FFA2" },
-  ].map(({ label, to, color }) => {
-    const Tag = to ? Link : "a"
-    return (
-      <Tag
-        key={label}
-        to={to}
-        className="relative group text-xs uppercase tracking-[0.32em] text-white/70 transition"
-      >
-        {/* TEXT */}
-        <span className="relative z-10 group-hover:text-white">
-          {label}
-        </span>
-
-        {/* UNDERLINE ENERGY */}
-        <span
-          className="absolute left-1/2 -translate-x-1/2 -bottom-2 h-[2px] w-0
-          group-hover:w-6 transition-all duration-500"
-          style={{ backgroundColor: color }}
-        />
-
-        {/* HOVER GLOW */}
-        <span
-          className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100
-          blur-lg transition duration-500"
-          style={{ backgroundColor: `${color}20` }}
-        />
-      </Tag>
-    )
-  })}
-</nav>
-
-
-    {/* DERECHA */}
-    <div className="ml-auto flex items-center gap-6">
-
-      {/* STAFF ICONS */}
-      <div className="hidden lg:flex items-center gap-2 relative">
-        {staff.map((member) => (
-          <div
-            key={member.name}
-            className="staff-icon group"
-            style={{ "--glow": member.color }}
-          >
-            <img src={member.avatar} alt={member.name} />
-            <div className="staff-tooltip">
-              <p className="staff-name">{member.name}</p>
-              <span className="staff-role">{member.role}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-{/* BUY — PRIMARY CTA */}
-<Link to="/pricing" className="hidden md:block">
-  <button
-    className="relative group px-8 py-3
-    font-black uppercase tracking-[0.32em]
-    text-black rounded-md
-    bg-[#FF7A00]
-    shadow-[0_0_35px_rgba(255,122,0,0.45)]
-    transition-all duration-500
-    hover:shadow-[0_0_60px_rgba(255,122,0,0.85)]
-    hover:-translate-y-[1px]"
-  >
-    {/* GLOW AURA */}
-    <span className="absolute inset-0 rounded-md bg-[#FF7A00]/50 blur-xl opacity-0 group-hover:opacity-100 transition duration-500" />
-
-    {/* ENERGY LINE */}
-    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-0
-    bg-gradient-to-r from-transparent via-black to-transparent
-    group-hover:w-2/3 transition-all duration-700" />
-
-    {/* TEXT */}
-    <span className="relative z-10">
-      Buy
-    </span>
-  </button>
-</Link>
-
-{/* LOGIN — SECONDARY CTA */}
-<button
-  onClick={() => (window.location.href = "http://localhost:5000/auth/discord")}
-  className="hidden md:block relative group px-7 py-3
-  font-semibold uppercase tracking-[0.32em]
-  text-white rounded-md
-  border border-white/20
-  bg-black/40 backdrop-blur-md
-  transition-all duration-500
-  hover:border-[#7B2CFF]/60
-  hover:text-[#7B2CFF]"
->
-  {/* INNER GLOW */}
-  <span className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100
-  bg-[radial-gradient(circle_at_center,rgba(123,44,255,0.25),transparent_70%)]
-  transition duration-500" />
-
-  {/* TEXT */}
-  <span className="relative z-10">
-    Login
-  </span>
-</button>
-
-      {/* HAMBURGER MOBILE */}
-      <button
-        onClick={() => setMenuOpen(true)}
-        className="md:hidden text-white text-3xl z-50"
-      >
-        ☰
-      </button>
-
-    </div>
-  </div>
-</header>
-
-{/* MENU MOBILE PRO */}
-{menuOpen && (
-  <div
-    className="fixed inset-0 z-[999] bg-gradient-to-br from-black via-[#120016] to-black
-    backdrop-blur-2xl flex flex-col items-center justify-center px-6"
-  >
-
-    {/* CLOSE */}
-    <button
-      onClick={() => setMenuOpen(false)}
-      className="absolute top-6 right-6 text-white text-3xl hover:text-[#7B2CFF] transition"
-    >
-      ✕
-    </button>
-
-    {/* LOGO */}
-    <img
-      src="/tspc-logo.jpg"
-      className="w-28 mb-10 drop-shadow-[0_0_25px_rgba(123,44,255,0.6)]"
-      alt="TSPC"
-    />
-
-    {/* LINKS */}
-    <nav className="flex flex-col gap-6 text-center uppercase tracking-[0.35em] text-sm text-white/80">
-      <a onClick={() => setMenuOpen(false)} href="#" className="hover:text-[#7B2CFF] transition">
-        Torneos
-      </a>
-      <a onClick={() => setMenuOpen(false)} href="#" className="hover:text-[#7B2CFF] transition">
-        Rankings
-      </a>
-      <a onClick={() => setMenuOpen(false)} href="#" className="hover:text-[#7B2CFF] transition">
-        Equipos
-      </a>
-
-      <Link
-        to="/livestreams"
-        onClick={() => setMenuOpen(false)}
-        className="hover:text-[#FF7A00] transition"
-      >
-        Livestreams
-      </Link>
-
-      <Link
-        to="/ruleta"
-        onClick={() => setMenuOpen(false)}
-        className="hover:text-[#00FFA2] transition"
-      >
-        Ruleta
-      </Link>
-    </nav>
-
-    {/* ACTIONS */}
-    <div className="mt-12 flex flex-col gap-4 w-full max-w-xs">
-
-      {/* BUY MOBILE */}
-      <button
-        onClick={() => {
-          setMenuOpen(false);
-          window.location.href = "/pricing";
+return (
+  <>
+    {/* 🚀 PRELOADER */}
+    {showPreloader && (
+      <Preloader
+        onFinish={() => {
+          setShowPreloader(false);
+          setShowPage(true);
         }}
-        className="w-full py-4 rounded-xl font-extrabold uppercase tracking-[0.3em]
-        text-black bg-gradient-to-r from-[#FF7A00] via-[#FFB347] to-[#7B2CFF]
-        shadow-[0_0_40px_rgba(255,122,0,0.7)]
-        hover:scale-[1.05]
-        transition-all duration-300"
-      >
-        Buy
-      </button>
+      />
+    )}
 
-      {/* LOGIN MOBILE */}
-      <button
-        onClick={() => {
-          setMenuOpen(false);
-          window.location.href = "http://localhost:5000/auth/discord";
-        }}
-        className="w-full py-4 rounded-xl font-bold uppercase tracking-[0.3em]
-        bg-gradient-to-r from-[#7B2CFF] to-[#FF7A00]
-        hover:shadow-[0_0_30px_rgba(123,44,255,0.7)]
-        hover:scale-[1.05]
-        transition-all duration-300"
-      >
-        Login
-      </button>
-
-    </div>
-
-    {/* FOOTER */}
-    <span className="mt-10 text-xs text-white/30 tracking-widest">
-      TSPC ESPORTS © 2026
-    </span>
-
-  </div>
-)}
-
-
-
-
+    {/* 🌍 HOME */}
+    {showPage && (
+      <main className="transition-opacity duration-700 opacity-100">
 {/* HERO – GOD MODE ELITE (PRO / SOBRIO / IMPACTANTE) */}
 
 <section className="relative min-h-[100svh] flex items-center px-6 sm:px-10 md:px-24 pt-28 md:pt-32 overflow-hidden bg-black">
@@ -1111,7 +747,8 @@ como un profesional?
 </footer>
 
 
-
-    </main>
-  );
+      </main>
+    )}
+  </>
+);
 }

@@ -1,25 +1,36 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginSuccess() {
+  const [params] = useSearchParams();
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   useEffect(() => {
-    const token = new URLSearchParams(window.location.search).get("token");
+    const token = params.get("token");
 
-    if (token) {
-      localStorage.setItem("tspc_token", token);
-      navigate("/"); // vuelve al home
-    } else {
-      navigate("/login-error");
+    // ❌ si no hay token → fuera
+    if (!token) {
+      navigate("/", { replace: true });
+      return;
     }
-  }, [navigate]);
 
-  return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center">
-      <p className="text-lg tracking-widest uppercase text-[#7B2CFF] animate-pulse">
-        Iniciando sesión...
-      </p>
-    </div>
-  );
+    // 🔐 guardar token
+    localStorage.setItem("tspc_token", token);
+
+    // 👤 decodificar usuario
+    const decoded = jwtDecode(token);
+    setUser(decoded);
+
+    // 🚨 FLAG ÚNICO → activar preloader SOLO UNA VEZ
+    localStorage.setItem("tspc:fromLogin", "true");
+
+    // ➡️ volver al home (App se encarga del preloader)
+    navigate("/", { replace: true });
+  }, [navigate, params, setUser]);
+
+  // 🖤 pantalla vacía mientras redirige
+  return null;
 }

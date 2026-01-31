@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import Preloader from "../components/Preloader";
 import gsap from "gsap";
 import { useAuth } from "../context/AuthContext";
@@ -24,6 +24,8 @@ export default function Home() {
   const { user, logout } = useAuth();
   const [fromLogin, setFromLogin] = useState(false);
   const [showPreloader, setShowPreloader] = useState(false);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
   const [loaded, setLoaded] = useState(false);
   const [showPage, setShowPage] = useState(false);
@@ -43,7 +45,20 @@ useEffect(() => {
   } else {
     setShowPage(true);
   }
+
+
+    const move = (e) => {
+      mouseX.set(e.clientX - window.innerWidth / 2);
+      mouseY.set(e.clientY - window.innerHeight / 2);
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);  
 }, []);
+
+  const bgX = useTransform(mouseX, [-500, 500], [-40, 40]);
+  const bgY = useTransform(mouseY, [-500, 500], [-30, 30]);
+  const coreX = useTransform(mouseX, [-500, 500], [-20, 20]);
+  const coreY = useTransform(mouseY, [-500, 500], [-20, 20]);
 
 return (
   <>
@@ -60,32 +75,34 @@ return (
     {/* 🌍 HOME */}
     {showPage && (
       <main className="transition-opacity duration-700 opacity-100">
+
 {/* HERO – GOD MODE ELITE (PRO / SOBRIO / IMPACTANTE) */}
 
-<section className="relative min-h-[100svh] flex items-center px-6 sm:px-10 md:px-24 pt-28 md:pt-32 overflow-hidden bg-black">
-      {/* REACTIVE BACKGROUND */}
-      <div
-        className="absolute inset-0 transition-transform duration-300"
-        style={{ transform: "translate(var(--px), var(--py))" }}
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#7B2CFF55,transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,#FF7A0035,transparent_65%)]" />
-        <div className="absolute inset-0 opacity-[0.045] bg-[url('/noise.png')] mix-blend-overlay" />
-      </div>
+    <section className="relative min-h-[100svh] overflow-hidden bg-black px-6 sm:px-10 md:px-24 pt-28 md:pt-32 flex items-center perspective-[1600px]">
 
-      {/* GRID OVERLAY */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:80px_80px] opacity-25" />
-
-      {/* CONTENT */}
+      {/* ================= BACKGROUND SYSTEM ================= */}
       <motion.div
-        initial={{ opacity: 0, y: 80 }}
+        style={{ x: bgX, y: bgY }}
+        className="absolute inset-0"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#7B2CFF66,transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,#FF7A0040,transparent_60%)]" />
+        <div className="absolute inset-0 opacity-[0.045] bg-[url('/noise.png')] mix-blend-overlay" />
+      </motion.div>
+
+      {/* GRID */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:80px_80px] opacity-20" />
+
+      {/* ================= MAIN CONTENT ================= */}
+      <motion.div
+        initial={{ opacity: 0, y: 90 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.4, ease: "easeOut" }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
         className="relative z-10 max-w-4xl"
       >
 
         {/* STATUS */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-12">
           <span className="px-4 py-1.5 border border-[#7B2CFF] text-[#7B2CFF] text-[11px] uppercase tracking-[0.35em] backdrop-blur-md">
             Registro Abierto
           </span>
@@ -95,98 +112,96 @@ return (
         </div>
 
         {/* TITLE */}
-        <h1 className="font-['Orbitron'] font-extrabold leading-[1.05] tracking-[0.14em] text-[clamp(3rem,6vw,5.6rem)]">
-          <span
-            className="block text-white/80 transition-transform"
-            style={{ transform: "translateX(var(--px))" }}
-          >
-            TSPC
+        <h1 className="font-['Orbitron'] font-extrabold leading-[0.95] tracking-[0.22em] text-[clamp(2.8rem,6vw,6rem)]">
+
+          <span className="block text-white/40 text-sm tracking-[0.6em] mb-5">
+            TSPC Esports
           </span>
 
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#7B2CFF] via-white to-[#7B2CFF] drop-shadow-[0_0_50px_rgba(123,44,255,0.9)] animate-coreBreath">
-            WARZONE
+          <span className="relative block">
+            <span className="absolute inset-0 text-[#7B2CFF] blur-2xl opacity-70 animate-coreBreath">
+              WARZONE
+            </span>
+            <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-[#7B2CFF] via-white to-[#FF7A00]">
+              WARZONE
+            </span>
           </span>
 
-          <span
-            className="block text-white/80 transition-transform"
-            style={{ transform: "translateX(calc(var(--px) * -1))" }}
-          >
+          <span className="block mt-4 text-white/80 text-[clamp(1.8rem,4vw,3rem)] tracking-[0.45em]">
             CUP
           </span>
         </h1>
 
-        {/* ACCENT */}
-        <div className="mt-6 h-[2px] w-56 bg-gradient-to-r from-transparent via-[#7B2CFF] to-transparent" />
+        {/* DIVIDER */}
+        <div className="mt-10 h-[2px] w-64 bg-gradient-to-r from-transparent via-[#7B2CFF] to-transparent" />
 
-        {/* SUBTITLE */}
-        <p className="text-gray-300 mt-8 max-w-xl text-base sm:text-lg leading-relaxed">
+        {/* DESCRIPTION */}
+        <p className="text-gray-300 mt-10 max-w-xl text-base sm:text-lg leading-relaxed">
           Torneos competitivos de Warzone con producción profesional,
-          sistema de ranking real y equipos élite de LATAM.
+          ranking real, anti-cheat activo y equipos élite de LATAM.
         </p>
 
-        {/* HUD */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mt-16">
+        {/* STATS */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-16">
           {[
-            "Prize Pool|$1,000",
-            "Equipos|28 / 32",
-            "Modo|Trios",
-            "Región|LATAM",
-          ].map((item) => {
-            const [label, value] = item.split("|")
-            return (
-              <div
-                key={label}
-                className="relative p-5 text-center rounded-xl bg-black/40 backdrop-blur-xl border border-white/10 hover:border-[#7B2CFF]/60 transition-all duration-500 hover:-translate-y-1"
-              >
-                <span className="text-gray-400 text-[10px] tracking-[0.4em] uppercase">
-                  {label}
-                </span>
-                <p className="text-[#7B2CFF] font-black text-xl sm:text-2xl mt-2 drop-shadow-[0_0_25px_rgba(123,44,255,0.7)]">
-                  {value}
-                </p>
-              </div>
-            )
-          })}
+            ["Prize Pool", "$1,000"],
+            ["Equipos", "28 / 32"],
+            ["Modo", "Trios"],
+            ["Región", "LATAM"],
+          ].map(([label, value]) => (
+            <div
+              key={label}
+              className="relative p-6 text-center rounded-xl bg-black/40 backdrop-blur-xl border border-white/10 hover:border-[#7B2CFF]/60 transition-all duration-500 hover:-translate-y-1"
+            >
+              <span className="text-gray-400 text-[10px] tracking-[0.4em] uppercase">
+                {label}
+              </span>
+              <p className="text-[#7B2CFF] font-black text-xl sm:text-2xl mt-2 drop-shadow-[0_0_25px_rgba(123,44,255,0.7)]">
+                {value}
+              </p>
+            </div>
+          ))}
         </div>
 
-{/* CTA */}
-<div className="flex flex-col sm:flex-row gap-6 mt-20">
-<Link
-to="/pricing"
-className="px-10 py-3.5 bg-[#7B2CFF] text-black font-black uppercase tracking-[0.3em] rounded-md shadow-[0_0_50px_rgba(123,44,255,0.6)] hover:bg-[#FF7A00] transition text-center"
->
-Inscribirse
-</Link>
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row gap-6 mt-20">
+          <Link
+            to="/pricing"
+            className="relative px-14 py-4 font-black uppercase tracking-[0.35em] text-black rounded-md overflow-hidden group text-center"
+          >
+            <span className="absolute inset-0 bg-gradient-to-r from-[#7B2CFF] to-[#FF7A00] group-hover:scale-110 transition-transform" />
+            <span className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.7),transparent)] translate-x-[-100%] group-hover:translate-x-[100%] transition duration-700" />
+            <span className="relative z-10">Inscribirse</span>
+          </Link>
 
-
-<Link
-to="/livestreams"
-className="px-10 py-3.5 border border-white/20 text-white uppercase tracking-[0.3em] rounded-md hover:border-[#FF7A00] hover:text-[#FF7A00] transition text-center"
->
-Ver en vivo
-</Link>
-
-
-</div>
+          <Link
+            to="/livestreams"
+            className="px-14 py-4 border border-white/20 text-white uppercase tracking-[0.35em] rounded-md hover:border-[#FF7A00] hover:text-[#FF7A00] transition text-center"
+          >
+            Ver en vivo
+          </Link>
+        </div>
       </motion.div>
 
-      {/* RIGHT CORE – SIGNATURE */}
-      <div
-        className="hidden lg:block absolute right-24 top-1/2 -translate-y-1/2"
-        style={{ transform: "translate(var(--px), var(--py))" }}
+      {/* ================= RIGHT CORE ================= */}
+      <motion.div
+        style={{ x: coreX, y: coreY }}
+        className="hidden lg:block absolute right-20 top-1/2 -translate-y-1/2"
       >
         <div className="relative w-[460px] h-[460px]">
 
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#7B2CFF]/45 to-[#FF7A00]/30 blur-[120px] animate-coreBreath" />
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#7B2CFF]/40 via-transparent to-[#FF7A00]/30 blur-[160px]" />
 
           <div className="absolute inset-0 rounded-full border border-white/10 animate-spin-slower" />
-          <div className="absolute inset-10 rounded-full border border-[#7B2CFF]/40 animate-spin-reverse-slow" />
+          <div className="absolute inset-12 rounded-full border border-[#7B2CFF]/40 animate-spin-reverse-slow" />
 
-          <div className="absolute inset-28 rounded-full bg-black/70 backdrop-blur-xl border border-[#7B2CFF]/60 shadow-[0_0_90px_rgba(123,44,255,0.8)]" />
+          <div className="absolute inset-24 rounded-full bg-black/80 backdrop-blur-xl border border-[#7B2CFF]/60 shadow-[0_0_140px_rgba(123,44,255,1)]" />
 
-          <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-red-500 rounded-full shadow-[0_0_30px_rgba(255,0,0,1)] animate-ping" />
+          <div className="absolute inset-36 rounded-full border border-[#FF7A00]/40 animate-pulse" />
+
+          <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-red-500 rounded-full shadow-[0_0_40px_rgba(255,0,0,1)] animate-ping" />
         </div>
-      </div>
+      </motion.div>
     </section>
 
 
@@ -519,7 +534,11 @@ como un profesional?
           overflow-hidden transition-all duration-300
           hover:scale-[1.03] hover:bg-[#8F4BFF]"
         >
-          <span className="relative z-10">Ver planes</span>
+          <Link to="/pricing">
+  <span className="relative z-10 cursor-pointer hover:text-orange-400 transition">
+    Ver planes
+  </span>
+</Link>
           <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent
           translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
         </button>

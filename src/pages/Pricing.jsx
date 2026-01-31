@@ -1,6 +1,7 @@
 
 
 import React, { useState } from "react";
+import { useCart } from "../context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingCart,
@@ -52,86 +53,44 @@ const testimonials = [
   { name: "R4VEN", role: "Team Captain", text: "Si quieres competir en serio, esto es obligatorio." },
 ];
 
-/* =======================
-   COMPONENT
-======================= */
-
 export default function TSPCStore() {
-  const [cart, setCart] = useState([]);
-  const [openCart, setOpenCart] = useState(false);
 
-  const addToCart = (plan) => {
-    setCart((prev) => {
-      const found = prev.find((p) => p.id === plan.id);
-      if (found)
-        return prev.map((p) =>
-          p.id === plan.id ? { ...p, qty: p.qty + 1 } : p
-        );
-      return [...prev, { ...plan, qty: 1 }];
-    });
-    setOpenCart(true);
-  };
-
-  const updateQty = (id, qty) => {
-    if (qty <= 0) setCart((c) => c.filter((i) => i.id !== id));
-    else
-      setCart((c) =>
-        c.map((i) => (i.id === id ? { ...i, qty } : i))
-      );
-  };
+  const {
+    cart,
+    openCart,
+    setOpenCart,
+    addToCart,
+    updateQty,
+  } = useCart();
 
   const total = cart.reduce((a, b) => a + b.price * b.qty, 0);
+
+  const handleCheckout = async () => {
+    if (cart.length === 0) return;
+
+    try {
+      const res = await fetch("http://localhost:4000/api/payments/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cart }),
+      });
+
+      const data = await res.json();
+
+      if (!data.url) {
+        console.error("Stripe URL no recibida:", data);
+        return;
+      }
+
+      window.location.href = data.url;
+    } catch (err) {
+      console.error("Error en checkout:", err);
+    }
+  };
 
   return (
     <div className="bg-[#050010] text-white">
 
-{/* HEADER */}
-<header
-  className="
-    fixed top-0 w-full z-50
-    bg-black/50 backdrop-blur-xl
-    border-b border-white/10
-    transition-all duration-300
-  "
->
-  <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-    {/* LOGO */}
-    <span className="font-black tracking-widest text-lg">
-      TSPC<span className="text-fuchsia-400">.</span>
-    </span>
-
-    {/* NAV */}
-    <nav className="hidden md:flex gap-10 text-[13px] tracking-widest font-semibold text-white/60">
-      <a href="/" className="hover:text-white transition">HOME</a>
-      <a href="#plans" className="hover:text-white transition">PLANES</a>
-      <a href="#testimonials" className="hover:text-white transition">TESTIMONIOS</a>
-      <a href="#footer" className="hover:text-white transition">CONTACTO</a>
-    </nav>
-
-    {/* CART */}
-    <button
-      onClick={() => setOpenCart(true)}
-      className="relative group"
-    >
-      <ShoppingCart className="text-white/70 group-hover:text-white transition" />
-
-      {cart.length > 0 && (
-        <span
-          className="
-            absolute -top-2 -right-2
-            w-5 h-5
-            bg-gradient-to-r from-fuchsia-500 to-cyan-400
-            text-black text-xs font-black
-            rounded-full
-            flex items-center justify-center
-          "
-        >
-          {cart.length}
-        </span>
-      )}
-    </button>
-  </div>
-</header>
 {/* HERO – TSPC COMMAND CENTER */ }
 <section
   id="hero"
@@ -635,24 +594,36 @@ export default function TSPCStore() {
               <button onClick={() => setOpenCart(false)}><X /></button>
             </div>
 
-            {cart.map((i) => (
-              <div key={i.id} className="border-b border-white/10 pb-4 mb-4">
-                <p className="font-bold">{i.name}</p>
-                <div className="flex justify-between mt-2">
-                  <span className="text-white/50">${i.price} x {i.qty}</span>
-                  <div className="flex gap-3">
-                    <button onClick={() => updateQty(i.id, i.qty - 1)}><Minus size={16} /></button>
-                    <button onClick={() => updateQty(i.id, i.qty + 1)}><Plus size={16} /></button>
-                  </div>
-                </div>
-              </div>
-            ))}
+<div className="flex-1 overflow-y-auto pr-2">
+  {cart.map((i) => (
+    <div key={i.id} className="border-b border-white/10 pb-4 mb-4">
+      <p className="font-bold">{i.name}</p>
+      <div className="flex justify-between mt-2">
+        <span className="text-white/50">
+          ${i.price} x {i.qty}
+        </span>
+        <div className="flex gap-3">
+          <button onClick={() => updateQty(i.id, i.qty - 1)}>
+            <Minus size={16} />
+          </button>
+          <button onClick={() => updateQty(i.id, i.qty + 1)}>
+            <Plus size={16} />
+          </button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
 
             <div className="mt-10">
               <h4 className="text-3xl font-black">${total}</h4>
-              <button className="w-full mt-4 py-4 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-400 text-black font-black">
-                FINALIZAR COMPRA
-              </button>
+<button
+  onClick={handleCheckout}
+  disabled={cart.length === 0}
+  className="w-full mt-4 py-4 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-400 text-black font-black disabled:opacity-40"
+>
+  FINALIZAR COMPRA
+</button>
             </div>
           </motion.div>
         )}

@@ -5,7 +5,6 @@ const PLATFORMS = [
   { id: "twitch", label: "Twitch", color: "#9146FF" },
   { id: "kick", label: "Kick", color: "#00FFA3" },
   { id: "tiktok", label: "TikTok", color: "#FFFFFF" },
-  { id: "instagram", label: "Instagram", color: "#FF4ECD" },
 ]
 
 export default function Livestreams() {
@@ -60,19 +59,6 @@ export default function Livestreams() {
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_top,#7B2CFF30,transparent_60%)] pointer-events-none" />
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_bottom,#FF7A0020,transparent_60%)] pointer-events-none" />
       <div className="fixed inset-0 opacity-[0.035] bg-[url('/noise.png')] pointer-events-none" />
-
-      {/* HOME BUTTON */}
-      <Link to="/" className="fixed top-4 sm:top-6 left-4 sm:left-6 z-50">
-        <div className="group relative w-12 h-12 sm:w-14 sm:h-14 rounded-full
-          flex items-center justify-center
-          bg-black border border-white/15 backdrop-blur-xl
-          shadow-[0_0_35px_rgba(123,44,255,0.45)]
-          hover:scale-110 transition-all">
-          <span className="text-lg sm:text-xl">⌂</span>
-          <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100
-            blur-xl bg-gradient-to-r from-[#7B2CFF] to-[#FF7A00] transition" />
-        </div>
-      </Link>
 
       {/* HEADER */}
       <section className="relative max-w-6xl mx-auto text-center mb-20 sm:mb-28">

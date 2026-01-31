@@ -1,49 +1,60 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { supabase } from "../supabase/client";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem("tspc_token");
+useEffect(() => {
+  const fetchSession = async () => {
+    const { data: { session }, error } = await supabase.auth.getSession();
 
-    if (!token) {
+    if (error) {
+      console.error("Error obteniendo la sesión:", error);
       setLoading(false);
       return;
     }
 
-    try {
-      const decoded = jwtDecode(token);
-      setUser(decoded);
-    } catch {
-      localStorage.removeItem("tspc_token");
+    if (session) {
+      // Verifica la estructura de user_metadata
+      console.log(session.user.user_metadata);  // Agrega esto para inspeccionar la estructura de los datos
+
+      setUser({
+        ...session.user,
+        user_metadata: session.user.user_metadata || {},
+      });
+    } else {
       setUser(null);
-    } finally {
-      setLoading(false);
     }
-  }, []);
 
-  const logout = () => {
-    // 🔥 limpiar TODO lo del login
-    localStorage.removeItem("tspc_token");
-    localStorage.removeItem("tspc:fromLogin");
+    setLoading(false);
+  };
 
+  fetchSession();
+
+  const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    if (session?.user) {
+      fetchSession();
+    } else {
+      setUser(null);
+    }
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
+
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
-
-    // redirección limpia
-    window.location.href = "/";
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
+    <AuthContext.Provider value={{ user, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);

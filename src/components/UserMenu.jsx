@@ -16,14 +16,15 @@ export default function UserMenu({ user, logout }) {
           hover:border-[#7B2CFF]/60 transition
         "
       >
+        {/* Aseguramos que el avatar y nombre se obtienen correctamente de user.user_metadata */}
         <img
-          src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
+          src={user.user_metadata?.avatar_url || "/default-avatar.png"}  // Uso de avatar_url correcto
           alt="avatar"
           className="w-8 h-8 rounded-full"
         />
 
         <span className="text-xs uppercase tracking-widest text-white/80">
-          {user.username}
+          {user.user_metadata?.full_name || "User"}  {/* Cambié 'username' por 'full_name' */}
         </span>
       </button>
 
@@ -38,7 +39,7 @@ export default function UserMenu({ user, logout }) {
           <div className="px-4 py-3 text-xs text-white/50">
             Signed in as
             <div className="text-white font-semibold mt-1">
-              {user.username}
+              {user.user_metadata?.full_name || "User"} {/* También cambié 'username' por 'full_name' */}
             </div>
           </div>
 

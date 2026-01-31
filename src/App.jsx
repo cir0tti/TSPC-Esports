@@ -7,7 +7,6 @@ import Preloader from "./components/Preloader";
 
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
-
 import Home from "./pages/Home";
 import Ruleta from "./pages/Ruleta";
 import Livestreams from "./pages/Livestreams";
@@ -21,25 +20,24 @@ export default function App() {
   const [booting, setBooting] = useState(false);
   const [ready, setReady] = useState(false);
 
+  // Detectamos cuando venimos desde el login de Discord
   useEffect(() => {
     const fromLogin = localStorage.getItem("tspc:fromLogin");
 
-    if (fromLogin === "true") {
+    if (fromLogin === "true" && !booting) {
       setBooting(true);
       setReady(false);
-
-      // consumir flag (no se repite)
       localStorage.removeItem("tspc:fromLogin");
-    } else {
-      setReady(true);
+    } else if (!fromLogin) {
+      setReady(true); // Si no venimos de un login, activamos la app
     }
-  }, []);
+  }, [booting]);
 
   return (
     <>
       <ScrollToTop />
 
-      {/* 🔥 PRELOADER SOLO POST LOGIN */}
+      {/* Preloader solo si viene de login */}
       {booting && (
         <Preloader
           onFinish={() => {
@@ -49,29 +47,27 @@ export default function App() {
         />
       )}
 
-      {/* HEADER SOLO CUANDO LA APP ESTÁ LISTA */}
       {ready && <Header />}
 
-      {/* 🚨 RUTAS STRIPE SIEMPRE DISPONIBLES */}
-<Routes>
-  <Route path="/success" element={<Success />} />
-  <Route path="/cancel" element={<Cancel />} />
+      <Routes>
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
+        <Route path="/login-success" element={<LoginSuccess />} />
 
-  {ready ? (
-    <>
-      <Route path="/" element={<Home />} />
-      <Route path="/ruleta" element={<Ruleta />} />
-      <Route path="/livestreams" element={<Livestreams />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/pricing" element={<Pricing />} />
-      <Route path="/promocion" element={<Promocion />} />
-      <Route path="/bracket" element={<Bracket />} />
-      <Route path="/login-success" element={<LoginSuccess />} />
-    </>
-  ) : (
-    <Route path="*" element={null} />
-  )}
-</Routes>
+        {ready ? (
+          <>
+            <Route path="/" element={<Home />} />
+            <Route path="/ruleta" element={<Ruleta />} />
+            <Route path="/livestreams" element={<Livestreams />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/promocion" element={<Promocion />} />
+            <Route path="/bracket" element={<Bracket />} />
+          </>
+        ) : (
+          <Route path="*" element={null} />
+        )}
+      </Routes>
     </>
   );
 }

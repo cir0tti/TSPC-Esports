@@ -57,9 +57,8 @@ useEffect(() => {
 
   const bgX = useTransform(mouseX, [-500, 500], [-40, 40]);
   const bgY = useTransform(mouseY, [-500, 500], [-30, 30]);
-  const coreX = useTransform(mouseX, [-500, 500], [-20, 20]);
-  const coreY = useTransform(mouseY, [-500, 500], [-20, 20]);
-
+  const coreX = useTransform(mouseX, [-500, 500], [-12, 12]);
+  const coreY = useTransform(mouseY, [-500, 500], [-12, 12]);
 return (
   <>
     {/* 🚀 PRELOADER */}
@@ -80,15 +79,13 @@ return (
 
     <section className="relative min-h-[100svh] overflow-hidden bg-black px-6 sm:px-10 md:px-24 pt-28 md:pt-32 flex items-center perspective-[1600px]">
 
-      {/* ================= BACKGROUND SYSTEM ================= */}
-      <motion.div
-        style={{ x: bgX, y: bgY }}
-        className="absolute inset-0"
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#7B2CFF66,transparent_55%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,#FF7A0040,transparent_60%)]" />
-        <div className="absolute inset-0 opacity-[0.045] bg-[url('/noise.png')] mix-blend-overlay" />
-      </motion.div>
+{/* ================= BACKGROUND SYSTEM ================= */}
+<div className="absolute inset-0">
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#7B2CFF66,transparent_55%)]" />
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,#FF7A0040,transparent_60%)]" />
+  <div className="absolute inset-0 opacity-[0.045] bg-[url('/noise.png')] mix-blend-overlay" />
+</div>
+
 
       {/* GRID */}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:80px_80px] opacity-20" />
@@ -183,25 +180,31 @@ return (
         </div>
       </motion.div>
 
-      {/* ================= RIGHT CORE ================= */}
-      <motion.div
-        style={{ x: coreX, y: coreY }}
-        className="hidden lg:block absolute right-20 top-1/2 -translate-y-1/2"
-      >
-        <div className="relative w-[460px] h-[460px]">
+{/* ================= RIGHT CORE ================= */}
+<div className="hidden lg:block absolute right-20 top-1/2 -translate-y-1/2">
+  <div className="relative w-[460px] h-[460px]">
 
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#7B2CFF]/40 via-transparent to-[#FF7A00]/30 blur-[160px]" />
+    {/* 🔥 RADAR QUE SE MUEVE */}
+    <motion.div
+      style={{ x: coreX, y: coreY }}
+      className="absolute inset-0"
+    >
 
-          <div className="absolute inset-0 rounded-full border border-white/10 animate-spin-slower" />
-          <div className="absolute inset-12 rounded-full border border-[#7B2CFF]/40 animate-spin-reverse-slow" />
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#7B2CFF]/40 via-transparent to-[#FF7A00]/30 blur-[160px]" />
 
-          <div className="absolute inset-24 rounded-full bg-black/80 backdrop-blur-xl border border-[#7B2CFF]/60 shadow-[0_0_140px_rgba(123,44,255,1)]" />
+      <div className="absolute inset-0 rounded-full border border-white/10 animate-spin-slower" />
+      <div className="absolute inset-12 rounded-full border border-[#7B2CFF]/40 animate-spin-reverse-slow" />
 
-          <div className="absolute inset-36 rounded-full border border-[#FF7A00]/40 animate-pulse" />
+      <div className="absolute inset-24 rounded-full bg-black/80 backdrop-blur-xl border border-[#7B2CFF]/60 shadow-[0_0_140px_rgba(123,44,255,1)]" />
 
-          <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-red-500 rounded-full shadow-[0_0_40px_rgba(255,0,0,1)] animate-ping" />
-        </div>
-      </motion.div>
+      <div className="absolute inset-36 rounded-full border border-[#FF7A00]/40 animate-pulse" />
+
+      <div className="absolute top-1/2 left-1/2 w-4 h-4 bg-red-500 rounded-full shadow-[0_0_40px_rgba(255,0,0,1)] animate-ping" />
+
+    </motion.div>
+
+  </div>
+</div>
     </section>
 
 

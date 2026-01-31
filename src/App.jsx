@@ -14,6 +14,7 @@ import Livestreams from "./pages/Livestreams";
 import Dashboard from "./pages/Dashboard";
 import Pricing from "./pages/Pricing";
 import Promocion from "./pages/Promocion";
+import Bracket from "./pages/Bracket";
 import LoginSuccess from "./pages/LoginSuccess";
 
 export default function App() {
@@ -64,6 +65,7 @@ export default function App() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/promocion" element={<Promocion />} />
+      <Route path="/bracket" element={<Bracket />} />
       <Route path="/login-success" element={<LoginSuccess />} />
     </>
   ) : (

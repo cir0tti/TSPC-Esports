@@ -25,6 +25,7 @@ export default function Header() {
     { label: "Livestreams", to: "/livestreams" },
     { label: "Ruleta", to: "/ruleta" },
     { label: "Promocion", to: "/promocion" },
+    { label: "Bracket", to: "/bracket" },
   ];
 
   return (

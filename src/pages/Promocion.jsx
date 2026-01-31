@@ -98,6 +98,7 @@ const initialTeams = [
       "Velocidad, creatividad y jugadas impredecibles que rompen el meta.",
     paidUntil: Date.now() + 1000 * 60 * 60 * 24 * 14,
   },
+  
 ];
 
 /* ======================================

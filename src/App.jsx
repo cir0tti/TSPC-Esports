@@ -10,7 +10,7 @@ import Cancel from "./pages/Cancel";
 import Home from "./pages/Home";
 import Ruleta from "./pages/Ruleta";
 import Livestreams from "./pages/Livestreams";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard";
 import Tournaments from "./pages/Tournaments";
 import TournamentDetails from "./pages/TournamentDetails";
 import Pricing from "./pages/Pricing";

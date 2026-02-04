@@ -11,8 +11,11 @@ import Home from "./pages/Home";
 import Ruleta from "./pages/Ruleta";
 import Livestreams from "./pages/Livestreams";
 import Dashboard from "./pages/Dashboard";
+import Tournaments from "./pages/Tournaments";
+import TournamentDetails from "./pages/TournamentDetails";
 import Pricing from "./pages/Pricing";
 import Promocion from "./pages/Promocion";
+import Tutorial from "./pages/Tutorial";
 import Bracket from "./pages/Bracket";
 import LoginSuccess from "./pages/LoginSuccess";
 
@@ -63,6 +66,9 @@ export default function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/promocion" element={<Promocion />} />
             <Route path="/bracket" element={<Bracket />} />
+            <Route path="/tutorialtspc" element={<Tutorial />} />
+            <Route path="/tournaments" element={<Tournaments />} /> {/* Ruta para los torneos */}
+            <Route path="/tournament/:id" element={<TournamentDetails />} />
           </>
         ) : (
           <Route path="*" element={null} />

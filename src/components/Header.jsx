@@ -25,6 +25,7 @@ export default function Header() {
   const navItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/dashboard" },
+    { label: "Tournaments", to: "/tournaments" },
     { label: "Livestreams", to: "/livestreams" },
     { label: "Ruleta", to: "/ruleta" },
     { label: "Promocion", to: "/promocion" },

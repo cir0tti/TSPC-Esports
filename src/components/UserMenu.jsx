@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useUserPlan } from "../hooks/useUserPlan";
 
 export default function UserMenu({ user, logout }) {
   const [open, setOpen] = useState(false);
+  const { plan, loading } = useUserPlan(user);
 
   if (!user) return null;
 
@@ -44,6 +46,20 @@ export default function UserMenu({ user, logout }) {
           </div>
 
           <div className="border-t border-white/10" />
+
+
+{plan && (
+  <>
+    <div className="px-4 py-2 text-xs text-[#7B2CFF] uppercase tracking-widest">
+      Plan activo
+      <div className="text-white font-semibold mt-1">
+        {plan.plan_name}
+      </div>
+    </div>
+
+    <div className="border-t border-white/10" />
+  </>
+)}
 
           <button className="w-full px-4 py-3 text-left text-sm hover:bg-white/5 transition">
             My Profile

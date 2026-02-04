@@ -163,12 +163,12 @@ return (
         {/* CTA */}
         <div className="flex flex-col sm:flex-row gap-6 mt-20">
           <Link
-            to="/pricing"
+            to="/tutorialtspc"
             className="relative px-14 py-4 font-black uppercase tracking-[0.35em] text-black rounded-md overflow-hidden group text-center"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-[#7B2CFF] to-[#FF7A00] group-hover:scale-110 transition-transform" />
             <span className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.7),transparent)] translate-x-[-100%] group-hover:translate-x-[100%] transition duration-700" />
-            <span className="relative z-10">Inscribirse</span>
+            <span className="relative z-10">Tutorial</span>
           </Link>
 
           <Link

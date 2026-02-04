@@ -21,6 +21,9 @@ export default function RuletaPremium() {
     return () => (document.body.style.cursor = "default");
   }, []);
 
+const waitForStateUpdate = () =>
+  new Promise((resolve) => requestAnimationFrame(resolve));
+
   const clearCanvas = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -28,77 +31,76 @@ export default function RuletaPremium() {
     ctx.clearRect(0, 0, size, size);
   };
 
-  const drawWheel = (rotation = 0) => {
-    const canvas = canvasRef.current;
-    if (!canvas || availableItems.length === 0) {
-      clearCanvas();
-      return;
-    }
+const drawWheel = (rotation = 0, items = availableItems) => {
+  const canvas = canvasRef.current;
+  if (!canvas || items.length === 0) {
+    clearCanvas();
+    return;
+  }
 
-    const ctx = canvas.getContext("2d");
-    const arc = (2 * Math.PI) / availableItems.length;
-    ctx.clearRect(0, 0, size, size);
+  const ctx = canvas.getContext("2d");
+  const arc = (2 * Math.PI) / items.length;
+  ctx.clearRect(0, 0, size, size);
 
-    // Glow externo
-    const glow = ctx.createRadialGradient(
-      radius,
-      radius,
-      radius * 0.5,
-      radius,
-      radius,
-      radius
-    );
-    glow.addColorStop(0, "rgba(123,44,255,0.35)");
-    glow.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = glow;
+  // Glow externo
+  const glow = ctx.createRadialGradient(
+    radius,
+    radius,
+    radius * 0.5,
+    radius,
+    radius,
+    radius
+  );
+  glow.addColorStop(0, "rgba(123,44,255,0.35)");
+  glow.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(radius, radius, radius, 0, Math.PI * 2);
+  ctx.fill();
+
+  items.forEach((item, i) => {
+    const start = arc * i + rotation;
+
     ctx.beginPath();
-    ctx.arc(radius, radius, radius, 0, Math.PI * 2);
+    ctx.fillStyle = item.color;
+    ctx.moveTo(radius, radius);
+    ctx.arc(radius, radius, radius, start, start + arc);
     ctx.fill();
 
-    availableItems.forEach((item, i) => {
-      const start = arc * i + rotation;
-
-      ctx.beginPath();
-      ctx.fillStyle = item.color; // COLOR FIJO
-      ctx.moveTo(radius, radius);
-      ctx.arc(radius, radius, radius, start, start + arc);
-      ctx.fill();
-
-      // Borde luminoso
-      ctx.strokeStyle = "rgba(255,255,255,0.15)";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      ctx.save();
-      ctx.translate(radius, radius);
-      ctx.rotate(start + arc / 2);
-      ctx.fillStyle = "#fff";
-      ctx.font = "bold 14px system-ui, sans-serif";
-      ctx.textAlign = "right";
-      ctx.shadowColor = "#000";
-      ctx.shadowBlur = 4;
-      ctx.fillText(item.label, radius - 18, 6);
-      ctx.restore();
-    });
-
-    // Centro
-    ctx.beginPath();
-    ctx.fillStyle = "#0f0f1a";
-    ctx.arc(radius, radius, 44, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "#7B2CFF";
+    ctx.strokeStyle = "rgba(255,255,255,0.15)";
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Flecha superior
+    ctx.save();
+    ctx.translate(radius, radius);
+    ctx.rotate(start + arc / 2);
     ctx.fillStyle = "#fff";
-    ctx.beginPath();
-    ctx.moveTo(radius, 6);
-    ctx.lineTo(radius - 18, 44);
-    ctx.lineTo(radius + 18, 44);
-    ctx.closePath();
-    ctx.fill();
-  };
+    ctx.font = "bold 14px system-ui, sans-serif";
+    ctx.textAlign = "right";
+    ctx.shadowColor = "#000";
+    ctx.shadowBlur = 4;
+    ctx.fillText(item.label, radius - 18, 6);
+    ctx.restore();
+  });
+
+  // Centro
+  ctx.beginPath();
+  ctx.fillStyle = "#0f0f1a";
+  ctx.arc(radius, radius, 44, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = "#7B2CFF";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Flecha superior
+  ctx.fillStyle = "#fff";
+  ctx.beginPath();
+  ctx.moveTo(radius, 6);
+  ctx.lineTo(radius - 18, 44);
+  ctx.lineTo(radius + 18, 44);
+  ctx.closePath();
+  ctx.fill();
+};
 
   useEffect(() => {
     drawWheel(angle);
@@ -113,85 +115,81 @@ export default function RuletaPremium() {
     return availableItems[index];
   };
 
-  const spinOnce = () =>
-    new Promise((resolve) => {
-      let currentAngle = angle;
-      let velocity = Math.random() * 0.45 + 0.55;
-      const friction = 0.988;
+const spinOnce = (items) =>
+  new Promise((resolve) => {
+    let currentAngle = 0; // 🔥 RESET SIEMPRE
+    let velocity = Math.random() * 0.45 + 0.55;
+    const friction = 0.988;
 
-      const animate = () => {
-        currentAngle += velocity;
-        velocity *= friction;
-        setAngle(currentAngle);
-        drawWheel(currentAngle);
+    const animate = () => {
+      currentAngle += velocity;
+      velocity *= friction;
+      setAngle(currentAngle);
 
-        if (velocity < 0.002) {
-          const result = getWinner(currentAngle);
-          confetti({
-            particleCount: 140,
-            spread: 75,
-            origin: { y: 0.6 },
-          });
-          resolve(result);
-        } else {
-          requestAnimationFrame(animate);
-        }
-      };
+      drawWheel(currentAngle, items);
 
-      requestAnimationFrame(animate);
-    });
+      if (velocity < 0.002) {
+        const arc = (2 * Math.PI) / items.length;
+        const normalized =
+          ((2 * Math.PI) - ((currentAngle + Math.PI / 2) % (2 * Math.PI))) %
+          (2 * Math.PI);
+        const index = Math.floor(normalized / arc);
 
-  const spin = async () => {
-    if (spinning || availableItems.length === 0) return;
-
-    setSpinning(true);
-    setWinner(null);
-
-    // 🔹 MODOS VS
-    const modeMap = { "1v1": 2, "2v2": 4, "3v3": 6 };
-    const picksNeeded = modeMap[spinMode] || 2;
-
-    let remaining = [...availableItems];
-    let selected = [];
-
-    for (let i = 0; i < picksNeeded; i++) {
-      if (remaining.length === 0) break;
-
-      setAvailableItems(remaining);
-      const result = await spinOnce();
-
-      // 🔴 EVITA DUPLICADOS
-      if (selected.find((p) => p.label === result.label)) {
-        i--;
-        continue;
+        confetti({ particleCount: 140, spread: 75, origin: { y: 0.6 } });
+        resolve(items[index]);
+      } else {
+        requestAnimationFrame(animate);
       }
+    };
 
-      selected.push(result);
-      remaining = remaining.filter((item) => item.label !== result.label);
-    }
+    requestAnimationFrame(animate);
+  });
 
-    const teamSize = picksNeeded / 2;
-    const teamA = selected.slice(0, teamSize);
-    const teamB = selected.slice(teamSize);
+const spin = async () => {
+  if (spinning || availableItems.length === 0) return;
 
-    setMatches((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        teamA,
-        teamB,
-      },
-    ]);
+  setSpinning(true);
+  setWinner(null);
 
+  const modeMap = { "1v1": 2, "2v2": 4, "3v3": 6 };
+  const picksNeeded = modeMap[spinMode] || 2;
+
+  let remaining = [...availableItems];
+  let selected = [];
+
+  for (let i = 0; i < picksNeeded; i++) {
+    if (remaining.length === 0) break;
+
+    const result = await spinOnce(remaining);
+    selected.push(result);
+
+    // ❌ eliminar ANTES del siguiente giro
+    remaining = remaining.filter(p => p.label !== result.label);
     setAvailableItems(remaining);
-    setWinner(
-      `${teamA.map((t) => t.label).join(", ")} vs ${teamB
-        .map((t) => t.label)
-        .join(", ")}`
-    );
 
-    setSpinning(false);
-  };
+    // pequeña pausa visual
+    await new Promise(r => setTimeout(r, 150));
+  }
+
+  const half = picksNeeded / 2;
+
+  setMatches(prev => [
+    ...prev,
+    {
+      id: Date.now(),
+      teamA: selected.slice(0, half),
+      teamB: selected.slice(half),
+    },
+  ]);
+
+  setWinner(
+    `${selected.slice(0, half).map(p => p.label).join(", ")} vs ${
+      selected.slice(half).map(p => p.label).join(", ")
+    }`
+  );
+
+  setSpinning(false);
+};
 
   const addItem = () => {
     if (!input.trim()) return;

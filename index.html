@@ -1,58 +1,151 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="no-js">
   <head>
+    <!-- ======================================================
+      TSPC ESPORTS
+      Competitive Warzone Platform
+      Developed with precision & intent
+    ======================================================= -->
+
+    <!-- ================= CORE ================= -->
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- TITLE -->
-    <title>TSPC Esports</title>
+    <!-- ================= TITLE ================= -->
+    <title>
+      TSPC Esports — Competitive Warzone Platform | LATAM
+    </title>
 
-    <!-- SEO -->
+    <!-- ================= PRIMARY SEO ================= -->
     <meta
       name="description"
-      content="TSPC Esports es una plataforma competitiva de torneos, ruletas y eventos de esports."
+      content="TSPC Esports es una plataforma competitiva profesional de Warzone en LATAM. Torneos reales, rankings, ruletas, broadcasts y premios."
     />
+    <meta
+      name="keywords"
+      content="TSPC, esports, warzone, torneos, competitivos, LATAM, ruletas, premios, gaming profesional"
+    />
+    <meta name="author" content="TSPC Esports" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://tspcsport.com/" />
 
-    <!-- OPEN GRAPH (Discord, WhatsApp, Facebook) -->
+    <!-- ================= BRAND / MOBILE ================= -->
+    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="msapplication-navbutton-color" content="#0A0A0A" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="TSPC Esports" />
+
+    <!-- ================= OPEN GRAPH ================= -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TSPC Esports" />
     <meta property="og:url" content="https://tspcsport.com/" />
-    <meta property="og:title" content="TSPC Esports" />
+    <meta
+      property="og:title"
+      content="TSPC Esports — Competitive Warzone LATAM"
+    />
     <meta
       property="og:description"
-      content="Compite en torneos, ruletas y eventos de esports en TSPC."
+      content="Plataforma competitiva profesional de Warzone. Torneos, rankings, ruletas y eventos en vivo."
     />
     <meta
       property="og:image"
-      content="https://tspcsport.com/og-image.png"
+      content="https://tspcsport.com/og-image.jpg"
     />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:locale" content="es_CL" />
 
-    <!-- TWITTER -->
+    <!-- ================= TWITTER / X ================= -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="TSPC Esports" />
     <meta
       name="twitter:description"
-      content="Plataforma competitiva de torneos y eventos esports."
+      content="Compite en torneos profesionales de Warzone en LATAM."
     />
     <meta
       name="twitter:image"
-      content="https://tspcsport.com/og-image.jpeg"
+      content="https://tspcsport.com/og-image.jpg"
     />
 
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="/favicon.png?v=2" />
+    <!-- ================= STRUCTURED DATA (SCHEMA) ================= -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "TSPC Esports",
+        "url": "https://tspcsport.com",
+        "logo": "https://tspcsport.com/logo.png",
+        "description": "Plataforma competitiva profesional de Warzone en LATAM.",
+        "sameAs": [
+          "https://twitter.com/",
+          "https://instagram.com/",
+          "https://discord.gg/"
+        ]
+      }
+    </script>
 
-    <!-- COLOR DE BARRA EN MÓVIL -->
-    <meta name="theme-color" content="#0a0a0a" />
+    <!-- ================= PERFORMANCE HINTS ================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://tspcsport.com" />
 
-    <!-- FontAwesome -->
+    <!-- ================= FONTS ================= -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ================= ICONS ================= -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
+
+    <!-- ================= FAVICONS ================= -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- ================= FALLBACK NO-JS ================= -->
+    <noscript>
+      <style>
+        body {
+          background: #000;
+          color: #fff;
+          font-family: Inter, system-ui, sans-serif;
+          padding: 2rem;
+        }
+      </style>
+      TSPC Esports requiere JavaScript para funcionar correctamente.
+    </noscript>
   </head>
 
-  <body>
+  <body
+    style="
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Inter, system-ui, sans-serif;
+    "
+  >
+    <!-- ======================================================
+      ROOT APP
+      Do not place content here
+    ======================================================= -->
     <div id="root"></div>
+
+    <!-- ================= ENTRY ================= -->
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- ======================================================
+      Build: Competitive
+      Version: 1.0
+      Developed by Cirotti
+    ======================================================= -->
   </body>
 </html>

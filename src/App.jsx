@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
-import Preloader from "./components/Preloader";
 
+// Pages
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
 import Home from "./pages/Home";
@@ -20,59 +20,37 @@ import Bracket from "./pages/Bracket";
 import LoginSuccess from "./pages/LoginSuccess";
 
 export default function App() {
-  const [booting, setBooting] = useState(false);
-  const [ready, setReady] = useState(false);
-
-  // Detectamos cuando venimos desde el login de Discord
-  useEffect(() => {
-    const fromLogin = localStorage.getItem("tspc:fromLogin");
-
-    if (fromLogin === "true" && !booting) {
-      setBooting(true);
-      setReady(false);
-      localStorage.removeItem("tspc:fromLogin");
-    } else if (!fromLogin) {
-      setReady(true); // Si no venimos de un login, activamos la app
-    }
-  }, [booting]);
-
   return (
     <>
+      {/* Siempre vuelve al top al cambiar de ruta */}
       <ScrollToTop />
 
-      {/* Preloader solo si viene de login */}
-      {booting && (
-        <Preloader
-          onFinish={() => {
-            setBooting(false);
-            setReady(true);
-          }}
-        />
-      )}
-
-      {ready && <Header />}
+      {/* Header global */}
+      <Header />
 
       <Routes>
+        {/* Home (con Preloader dentro del Home.jsx) */}
+        <Route path="/" element={<Home />} />
+
+        {/* Pagos */}
         <Route path="/success" element={<Success />} />
         <Route path="/cancel" element={<Cancel />} />
+
+        {/* Auth */}
         <Route path="/login-success" element={<LoginSuccess />} />
 
-        {ready ? (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="/ruleta" element={<Ruleta />} />
-            <Route path="/livestreams" element={<Livestreams />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/promocion" element={<Promocion />} />
-            <Route path="/bracket" element={<Bracket />} />
-            <Route path="/tutorialtspc" element={<Tutorial />} />
-            <Route path="/tournaments" element={<Tournaments />} /> {/* Ruta para los torneos */}
-            <Route path="/tournament/:id" element={<TournamentDetails />} />
-          </>
-        ) : (
-          <Route path="*" element={null} />
-        )}
+        {/* Páginas */}
+        <Route path="/ruleta" element={<Ruleta />} />
+        <Route path="/livestreams" element={<Livestreams />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/promocion" element={<Promocion />} />
+        <Route path="/bracket" element={<Bracket />} />
+        <Route path="/tutorialtspc" element={<Tutorial />} />
+
+        {/* Torneos */}
+        <Route path="/tournaments" element={<Tournaments />} />
+        <Route path="/tournament/:id" element={<TournamentDetails />} />
       </Routes>
     </>
   );

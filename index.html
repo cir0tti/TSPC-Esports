@@ -4,7 +4,6 @@
     <!-- ======================================================
       TSPC ESPORTS
       Competitive Warzone Platform
-      Developed with precision & intent
     ======================================================= -->
 
     <!-- ================= CORE ================= -->
@@ -13,32 +12,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- ================= TITLE ================= -->
-    <title>
-      TSPC Esports — Competitive Warzone Platform | LATAM
-    </title>
+    <title>TSPC Esports — Competitive Warzone Platform | LATAM</title>
 
-    <!-- ================= PRIMARY SEO ================= -->
+    <!-- ================= SEO ================= -->
     <meta
       name="description"
-      content="TSPC Esports es una plataforma competitiva profesional de Warzone en LATAM. Torneos reales, rankings, ruletas, broadcasts y premios."
+      content="TSPC Esports es una plataforma competitiva profesional de Warzone en LATAM. Torneos reales, rankings, ruletas y eventos."
     />
     <meta
       name="keywords"
-      content="TSPC, esports, warzone, torneos, competitivos, LATAM, ruletas, premios, gaming profesional"
+      content="TSPC, esports, warzone, torneos, competitivos, LATAM"
     />
     <meta name="author" content="TSPC Esports" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://tspcsport.com/" />
 
-    <!-- ================= BRAND / MOBILE ================= -->
+    <!-- ================= MOBILE BRAND ================= -->
     <meta name="theme-color" content="#0A0A0A" />
-    <meta name="msapplication-navbutton-color" content="#0A0A0A" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <meta name="apple-mobile-web-app-title" content="TSPC Esports" />
 
     <!-- ================= OPEN GRAPH ================= -->
     <meta property="og:type" content="website" />
@@ -50,7 +45,7 @@
     />
     <meta
       property="og:description"
-      content="Plataforma competitiva profesional de Warzone. Torneos, rankings, ruletas y eventos en vivo."
+      content="Plataforma competitiva profesional de Warzone."
     />
     <meta
       property="og:image"
@@ -61,7 +56,7 @@
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:locale" content="es_CL" />
 
-    <!-- ================= TWITTER / X ================= -->
+    <!-- ================= TWITTER ================= -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="TSPC Esports" />
     <meta
@@ -73,7 +68,7 @@
       content="https://tspcsport.com/og-image.jpg"
     />
 
-    <!-- ================= STRUCTURED DATA (SCHEMA) ================= -->
+    <!-- ================= STRUCTURED DATA ================= -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -81,19 +76,13 @@
         "name": "TSPC Esports",
         "url": "https://tspcsport.com",
         "logo": "https://tspcsport.com/logo.png",
-        "description": "Plataforma competitiva profesional de Warzone en LATAM.",
-        "sameAs": [
-          "https://twitter.com/",
-          "https://instagram.com/",
-          "https://discord.gg/"
-        ]
+        "description": "Plataforma competitiva profesional de Warzone en LATAM."
       }
     </script>
 
-    <!-- ================= PERFORMANCE HINTS ================= -->
+    <!-- ================= PERFORMANCE ================= -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://tspcsport.com" />
 
     <!-- ================= FONTS ================= -->
     <link
@@ -107,22 +96,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
 
-    <!-- ================= FAVICONS ================= -->
+    <!-- ================= FAVICON ================= -->
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-    <!-- ================= FALLBACK NO-JS ================= -->
-    <noscript>
-      <style>
-        body {
-          background: #000;
-          color: #fff;
-          font-family: Inter, system-ui, sans-serif;
-          padding: 2rem;
-        }
-      </style>
-      TSPC Esports requiere JavaScript para funcionar correctamente.
-    </noscript>
   </head>
 
   <body
@@ -133,19 +108,37 @@
       font-family: Inter, system-ui, sans-serif;
     "
   >
-    <!-- ======================================================
-      ROOT APP
-      Do not place content here
-    ======================================================= -->
+    <!-- ================= NOSCRIPT (VALID LOCATION) ================= -->
+    <noscript>
+      <div
+        style="
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: black;
+          color: white;
+          text-align: center;
+          font-family: Inter, system-ui, sans-serif;
+          padding: 2rem;
+        "
+      >
+        <div>
+          <h1 style="letter-spacing: 0.4em">TSPC ESPORTS</h1>
+          <p style="opacity: 0.7; margin-top: 1rem">
+            Esta plataforma requiere JavaScript para funcionar correctamente.
+          </p>
+        </div>
+      </div>
+    </noscript>
+
+    <!-- ================= ROOT ================= -->
     <div id="root"></div>
 
     <!-- ================= ENTRY ================= -->
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- ======================================================
-      Build: Competitive
-      Version: 1.0
-      Developed by Cirotti
-    ======================================================= -->
+    <!-- ================= BUILD SIGNATURE ================= -->
+    <!-- Build: Competitive | Developed by Cirotti -->
   </body>
 </html>

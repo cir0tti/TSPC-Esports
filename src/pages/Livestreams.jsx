@@ -1,5 +1,8 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
+import PremiumPreviewGate from "../components/PremiumPreviewGate"
+import { useAuth } from "../context/AuthContext"
+import { useUserPlan } from "../hooks/useUserPlan"
 
 const PLATFORMS = [
   { id: "twitch", label: "Twitch", color: "#9146FF" },
@@ -7,7 +10,10 @@ const PLATFORMS = [
   { id: "tiktok", label: "TikTok", color: "#FFFFFF" },
 ]
 
-export default function Livestreams() {
+/* ============================= */
+/* CONTENIDO REAL DE LA PÁGINA */
+/* ============================= */
+function LivestreamsContent() {
   const [query, setQuery] = useState("")
   const [results, setResults] = useState([])
   const [selected, setSelected] = useState([])
@@ -54,7 +60,6 @@ export default function Livestreams() {
 
   return (
     <div className="relative min-h-screen bg-black text-white px-4 sm:px-8 lg:px-10 py-20 sm:py-24 overflow-hidden">
-
       {/* BACKGROUND FX */}
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_top,#7B2CFF30,transparent_60%)] pointer-events-none" />
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_bottom,#FF7A0020,transparent_60%)] pointer-events-none" />
@@ -70,9 +75,11 @@ export default function Livestreams() {
         </h1>
 
         <p className="mt-6 sm:mt-8 text-gray-400 max-w-2xl mx-auto text-base sm:text-lg">
-          Producción en vivo, múltiples plataformas y control total.
-          Esta no es una vista de streams, es una{" "}
-          <span className="text-white font-semibold">experiencia de torneo</span>.
+          Producción en vivo, múltiples plataformas y control total. Esta no es
+          una vista de streams, es una{" "}
+          <span className="text-white font-semibold">
+            experiencia de torneo
+          </span>.
         </p>
       </section>
 
@@ -97,9 +104,7 @@ export default function Livestreams() {
               style={{
                 background: platform === p.id ? p.color : "transparent",
                 boxShadow:
-                  platform === p.id
-                    ? `0 0 60px ${p.color}90`
-                    : "none",
+                  platform === p.id ? `0 0 60px ${p.color}90` : "none",
               }}
             >
               {p.label}
@@ -163,8 +168,12 @@ export default function Livestreams() {
                 />
 
                 <div className="p-4 sm:p-6 bg-black/80 backdrop-blur">
-                  <h3 className="font-bold text-base sm:text-lg">{s.display_name}</h3>
-                  <p className="text-xs text-gray-400 line-clamp-1">{s.title}</p>
+                  <h3 className="font-bold text-base sm:text-lg">
+                    {s.display_name}
+                  </h3>
+                  <p className="text-xs text-gray-400 line-clamp-1">
+                    {s.title}
+                  </p>
                 </div>
               </div>
             ))}
@@ -205,7 +214,9 @@ export default function Livestreams() {
                   />
                   <div className="p-4 sm:p-6">
                     <h3 className="font-bold">{s.display_name}</h3>
-                    <p className="text-sm text-gray-400 line-clamp-2">{s.title}</p>
+                    <p className="text-sm text-gray-400 line-clamp-2">
+                      {s.title}
+                    </p>
                   </div>
                 </div>
               )
@@ -227,5 +238,27 @@ export default function Livestreams() {
         }
       `}</style>
     </div>
+  )
+}
+
+/* ============================= */
+/* WRAPPER PREMIUM (EXPORT) */
+/* ============================= */
+export default function Livestreams() {
+  const { user, loading: authLoading } = useAuth()
+  const { plan, loading: planLoading } = useUserPlan(user)
+
+  if (authLoading || planLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Cargando...
+      </div>
+    )
+  }
+
+  return (
+    <PremiumPreviewGate active={!plan}>
+      <LivestreamsContent />
+    </PremiumPreviewGate>
   )
 }

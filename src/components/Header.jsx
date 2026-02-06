@@ -59,20 +59,27 @@ export default function Header() {
       <header className="fixed top-0 left-0 w-full z-40 bg-black/60 backdrop-blur-xl border-b border-white/10">
         <div className="relative flex items-center h-16 px-6 md:px-20">
 
-          <Link to="/" className="flex items-center z-10">
+          <Link to="/" className="flex items-center justify-start z-10">
             <img src="/tspc-logo.jpg" className="w-24" alt="TSPC Logo" />
           </Link>
+<nav className="hidden md:flex absolute left-1/2 -translate-x-1/2">
+  <div className="flex items-center gap-5 xl:gap-7 text-[11px] xl:text-xs uppercase tracking-[0.22em] text-white/70 whitespace-nowrap">
+    {navItems.map(({ label, to }) => (
+      <Link
+        key={label}
+        to={to}
+        className="relative group transition hover:text-white"
+      >
+        {label}
 
-          <nav className="hidden md:flex items-center gap-10 absolute left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.32em] text-white/70">
-            {navItems.map(({ label, to }) => (
-              <Link key={label} to={to} className="relative group transition hover:text-white">
-                {label}
-                <span className="absolute left-1/2 -translate-x-1/2 -bottom-2 h-[2px] w-0 group-hover:w-6 transition-all duration-300 bg-[#7B2CFF]" />
-              </Link>
-            ))}
-          </nav>
+        <span className="absolute left-1/2 -translate-x-1/2 -bottom-2 h-[2px] w-0 group-hover:w-6 transition-all duration-300 bg-[#7B2CFF]" />
+      </Link>
+    ))}
+  </div>
+</nav>
 
-          <div className="ml-auto flex items-center gap-6">
+
+          <div className="ml-auto flex items-center gap-6 shrink-0">
             {/* STAFF */}
             <div className="hidden lg:flex items-center gap-2">
               {staff.map((member) => (

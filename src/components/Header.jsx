@@ -8,7 +8,7 @@ import UserMenu from "./UserMenu";
 const staff = [
   { name: "Skull", role: "Founder", avatar: "/staff/skull.jpg", color: "#7B2CFF" },
   { name: "Pr3dator", role: "Founder", avatar: "/staff/predator.png", color: "#FF7A00" },
-  { name: "Chucci", role: "Founder", avatar: "/staff/chucci.jpg", color: "#00FFA2" },
+  { name: "Wizz", role: "Founder", avatar: "/staff/Wizz.png", color: "#00FFA2" },
   { name: "Cirotti", role: "Developer", avatar: "/staff/cirotti.png", color: "#7B2CFF" },
 ];
 

@@ -22,37 +22,24 @@ export default function Home() {
   const token = localStorage.getItem("tspc_token");
   const isMobile = window.innerWidth < 768;
   const { user, logout } = useAuth();
-  const [fromLogin, setFromLogin] = useState(false);
-  const [showPreloader, setShowPreloader] = useState(false);
+  const [preloaderDone, setPreloaderDone] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const ENABLE_PRELOADER = false;
 
   const [loaded, setLoaded] = useState(false);
-  const [showPage, setShowPage] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+const [showPage, setShowPage] = useState(true);
 
 
 
 useEffect(() => {
-  const fromLogin = localStorage.getItem("tspc:fromLogin");
+  const move = (e) => {
+    mouseX.set(e.clientX - window.innerWidth / 2);
+    mouseY.set(e.clientY - window.innerHeight / 2);
+  };
 
-  if (fromLogin === "true") {
-    setShowPreloader(true);
-    setShowPage(false);
-
-    // 🔥 CONSUMIR EL FLAG (ESTO ES LO QUE TE FALTABA)
-    localStorage.removeItem("tspc:fromLogin");
-  } else {
-    setShowPage(true);
-  }
-
-
-    const move = (e) => {
-      mouseX.set(e.clientX - window.innerWidth / 2);
-      mouseY.set(e.clientY - window.innerHeight / 2);
-    };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);  
+  window.addEventListener("mousemove", move);
+  return () => window.removeEventListener("mousemove", move);
 }, []);
 
   const bgX = useTransform(mouseX, [-500, 500], [-40, 40]);
@@ -62,14 +49,14 @@ useEffect(() => {
 return (
   <>
     {/* 🚀 PRELOADER */}
-    {showPreloader && (
-      <Preloader
-        onFinish={() => {
-          setShowPreloader(false);
-          setShowPage(true);
-        }}
-      />
-    )}
+{ENABLE_PRELOADER && !preloaderDone && (
+  <Preloader
+    onFinish={() => {
+      sessionStorage.setItem("tspc:preloaderPlayed", "true");
+      setPreloaderDone(true);
+    }}
+  />
+)}
 
     {/* 🌍 HOME */}
     {showPage && (

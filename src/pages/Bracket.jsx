@@ -6,27 +6,25 @@ import {
   Clock,
   Gamepad2,
   ChevronDown,
-  Menu,
-  X,
 } from "lucide-react";
 
-/* ================= DATA ================= */
+/* ================= DATA (FAKE) ================= */
 
 const participants = [
-  { rank: 1, team: "AONE X MOLFIS", user: "-", history: ["W", "W", "W", "W"] },
-  { rank: 2, team: "DEPTZ X PRINCE", user: "-", history: ["W", "W", "W", "L"] },
-  { rank: 3, team: "CHINO X SLIZIC", user: "-", history: ["W", "W", "L"] },
-  { rank: 3, team: "CHUNGO X LUCI", user: "-", history: ["W", "W", "L"] },
-  { rank: 5, team: "KILLER X MASCIO", user: "-", history: ["L"] },
-  { rank: 5, team: "LEONCITA X ELI", user: "-", history: ["L"] },
-  { rank: 5, team: "SPADES X COVINI", user: "-", history: ["W", "L"] },
-  { rank: 5, team: "VLASX X FROSTIX", user: "-", history: ["W", "L"] },
-  { rank: 9, team: "FERNADE X BYRON", user: "-", history: ["L"] },
-  { rank: 9, team: "GURY X VALCEL", user: "-", history: ["L"] },
-  { rank: 9, team: "IDRAX X GABRIEL", user: "-", history: ["L"] },
-  { rank: 9, team: "MAGO X MIVKEE", user: "-", history: ["L"] },
-  { rank: 9, team: "SEPNIE X NICOLE", user: "-", history: ["L"] },
-  { rank: 9, team: "XOTIC X ADRIAN", user: "-", history: ["L"] },
+  { rank: 1, team: "CIROTTI X WIZZ", user: "Cirotti", history: ["W", "W", "W", "W"] },
+  { rank: 2, team: "PR3DATOR X SKULL", user: "Pr3dator", history: ["W", "W", "W", "L"] },
+  { rank: 3, team: "NEBULON X ZYREX", user: "Nebulon", history: ["W", "W", "L"] },
+  { rank: 3, team: "KRYPTA X OXIDE", user: "Krypta", history: ["W", "W", "L"] },
+  { rank: 5, team: "WIZZ X ASTRYX", user: "Wizz", history: ["L"] },
+  { rank: 5, team: "SKULL X VANTYX", user: "Skull", history: ["L"] },
+  { rank: 5, team: "NOXIR X PYRAX", user: "Noxir", history: ["W", "L"] },
+  { rank: 5, team: "ZENTHO X LUMEX", user: "Zentho", history: ["W", "L"] },
+  { rank: 9, team: "RAVIX X KORVA", user: "Ravix", history: ["L"] },
+  { rank: 9, team: "MYRKO X JEXON", user: "Myrko", history: ["L"] },
+  { rank: 9, team: "ULTRA X FEXIL", user: "Ultra", history: ["L"] },
+  { rank: 9, team: "CYRAX X NOVEX", user: "Cyrax", history: ["L"] },
+  { rank: 9, team: "PIXEL X TORIX", user: "Pixel", history: ["L"] },
+  { rank: 9, team: "ZORK X HELIX", user: "Zork", history: ["L"] },
 ];
 
 const tournament = {
@@ -35,47 +33,47 @@ const tournament = {
   format: "Single Elimination",
   game: "Call of Duty: Warzone",
   startTime: "January 29, 2026 · 22:00 GMT-5",
-  champion: "AONE x MOLFIS",
+  champion: "CIROTTI X WIZZ",
 };
 
 const results = [
-  { place: "1st", team: "AONE x MOLFIS", score: "4-0" },
-  { place: "2nd", team: "DEPTZ x PRINCE", score: "3-1" },
-  { place: "3rd", team: "CHINO x SLIZIC", score: "2-1" },
-  { place: "4th", team: "CHUNGO x LUCI", score: "2-1" },
+  { place: "1st", team: "CIROTTI X WIZZ", score: "4-0" },
+  { place: "2nd", team: "PR3DATOR X SKULL", score: "3-1" },
+  { place: "3rd", team: "NEBULON X ZYREX", score: "2-1" },
+  { place: "4th", team: "KRYPTA X OXIDE", score: "2-1" },
 ];
 
 const bracket = [
   {
     round: "Ronda 1",
     matches: [
-      { id: 1, team1: "CHINO X SLIZIC", team2: "IDRAX X GABRIEL", winner: 1 },
-      { id: 2, team1: "SEPNIE X NICOLE", team2: "AONE X MOLFIS", winner: 2 },
-      { id: 3, team1: "XOTIC X ADRIAN", team2: "VLASX X FROSTIX", winner: 2 },
-      { id: 4, team1: "DEPTZ X PRINCE", team2: "MAGO X MIVKEE", winner: 1 },
-      { id: 5, team1: "GURY X VALCEL", team2: "CHUNGO X LUCI", winner: 2 },
-      { id: 6, team1: "FERNADE X BYRON", team2: "SPADES X COVINI", winner: 2 },
+      { id: 1, team1: "NEBULON X ZYREX", team2: "ULTRA X FEXIL", winner: 1 },
+      { id: 2, team1: "PIXEL X TORIX", team2: "CIROTTI X WIZZ", winner: 2 },
+      { id: 3, team1: "ZORK X HELIX", team2: "ZENTHO X LUMEX", winner: 2 },
+      { id: 4, team1: "PR3DATOR X SKULL", team2: "CYRAX X NOVEX", winner: 1 },
+      { id: 5, team1: "MYRKO X JEXON", team2: "KRYPTA X OXIDE", winner: 2 },
+      { id: 6, team1: "RAVIX X KORVA", team2: "NOXIR X PYRAX", winner: 2 },
     ],
   },
   {
     round: "Ronda 2",
     matches: [
-      { id: 7, team1: "CHINO X SLIZIC", team2: "AONE X MOLFIS", winner: 2 },
-      { id: 8, team1: "VLASX X FROSTIX", team2: "DEPTZ X PRINCE", winner: 2 },
-      { id: 9, team1: "CHUNGO X LUCI", team2: "SPADES X COVINI", winner: 1 },
+      { id: 7, team1: "NEBULON X ZYREX", team2: "CIROTTI X WIZZ", winner: 2 },
+      { id: 8, team1: "ZENTHO X LUMEX", team2: "PR3DATOR X SKULL", winner: 2 },
+      { id: 9, team1: "KRYPTA X OXIDE", team2: "NOXIR X PYRAX", winner: 1 },
     ],
   },
   {
     round: "Semifinales",
     matches: [
-      { id: 10, team1: "AONE X MOLFIS", team2: "DEPTZ X PRINCE", winner: 1 },
-      { id: 11, team1: "CHUNGO X LUCI", team2: "SPADES X COVINI", winner: 2 },
+      { id: 10, team1: "CIROTTI X WIZZ", team2: "PR3DATOR X SKULL", winner: 1 },
+      { id: 11, team1: "KRYPTA X OXIDE", team2: "NOXIR X PYRAX", winner: 2 },
     ],
   },
   {
     round: "Final",
     matches: [
-      { id: 12, team1: "AONE X MOLFIS", team2: "SPADES X COVINI", winner: 1 },
+      { id: 12, team1: "CIROTTI X WIZZ", team2: "NOXIR X PYRAX", winner: 1 },
     ],
   },
 ];

@@ -1,7 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useUserPlan } from "../hooks/useUserPlan";
+import SubscriptionRequired from "../components/SubscriptionRequired";
 import confetti from "canvas-confetti";
 
-export default function RuletaPremium() {
+function RuletaContent() {
   const canvasRef = useRef(null);
   const [allItems, setAllItems] = useState([]); // Todos los jugadores originales
   const [availableItems, setAvailableItems] = useState([]); // Jugadores en ruleta actual
@@ -364,3 +367,28 @@ const spin = async () => {
     </div>
   );
 }
+
+
+
+export default function RuletaPremium() {
+  const { user, loading: authLoading } = useAuth();
+  const { plan, loading: planLoading } = useUserPlan(user);
+
+  console.log("USER:", user);
+  console.log("PLAN:", plan);
+
+  if (authLoading || planLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        Cargando...
+      </div>
+    );
+  }
+
+  if (!user || !plan) {
+    return <SubscriptionRequired />;
+  }
+
+  return <RuletaContent />;
+}
+

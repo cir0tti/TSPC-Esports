@@ -745,13 +745,18 @@ como un profesional?
         Enter Competitive Lobby
       </button>
 
-      <button
-        onClick={() => (window.location.href = "https://tspcsport.com/auth/discord")}
-        className="text-xs uppercase tracking-widest text-white/60
-        hover:text-[#7B2CFF] transition"
-      >
-        Login with Discord
-      </button>
+<button
+  onClick={() =>
+    window.location.assign("https://api.tspcsport.com/auth/discord")
+  }
+  className="flex items-center gap-2 px-4 py-2
+  text-xs uppercase tracking-widest
+  text-white/70 hover:text-[#7B2CFF]
+  transition"
+>
+  <i className="fab fa-discord text-sm" />
+  Login with Discord
+</button>
     </div>
 
     {/* DIVIDER */}

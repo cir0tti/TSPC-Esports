@@ -1,4 +1,3 @@
-import { supabase } from "../supabase/client";
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CartButton from "./CartButton";
@@ -32,17 +31,9 @@ export default function Header() {
     { label: "Bracket", to: "/bracket" },
   ];
 
-  const loginWithDiscord = async () => {
-    if (loggingIn) return;
-    setLoggingIn(true);
-
-    await supabase.auth.signInWithOAuth({
-      provider: "discord",
-      options: {
-        redirectTo: `${window.location.origin}/login-success`,
-      },
-    });
-  };
+const loginWithDiscord = () => {
+  window.location.href = "https://api.tspcsport.com/auth/discord";
+};
 
   // Agregar el console.log para ver los datos del usuario
   console.log(user);  // Esto te permitirá ver los datos del usuario y cómo están estructurados.
@@ -105,10 +96,9 @@ export default function Header() {
             {/* USER / LOGIN */}
 {user ? (
   <div className="relative flex items-center gap-2">
-    {/* Nombre del Usuario */}
-    <span className="text-sm text-white">{user.user_metadata?.user_name}</span>
-
-    {/* Menú de Usuario */}
+    <span className="text-sm text-white">
+      {user.username}
+    </span>
     <UserMenu user={user} logout={logout} />
   </div>
 ) : (
@@ -119,7 +109,6 @@ export default function Header() {
     Login
   </button>
 )}
-
             {/* CART */}
             {isPricing && <CartButton />}
 

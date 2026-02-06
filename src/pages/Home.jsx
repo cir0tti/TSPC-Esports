@@ -734,7 +734,7 @@ como un profesional?
       </button>
 
       <button
-        onClick={() => (window.location.href = "http://localhost:5000/auth/discord")}
+        onClick={() => (window.location.href = "")}
         className="text-xs uppercase tracking-widest text-white/60
         hover:text-[#7B2CFF] transition"
       >

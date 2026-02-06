@@ -7,13 +7,12 @@ export default function LoginSuccess() {
 
   useEffect(() => {
     const finishLogin = async () => {
-      // 🔥 Esto fuerza a Supabase a hidratar la sesión
-      await supabase.auth.getSession();
+      const { data, error } = await supabase.auth.getSession();
 
-      // 🔥 Le avisamos al App que venimos de login
-      localStorage.setItem("tspc:fromLogin", "true");
+      if (error) {
+        console.error("Error obteniendo sesión:", error);
+      }
 
-      // 🔥 Volvemos a la home
       navigate("/", { replace: true });
     };
 

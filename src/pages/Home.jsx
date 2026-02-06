@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import UserMenu from "../components/UserMenu";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { testimonials } from "../data/testimonials";
+import Lenis from "@studio-freight/lenis";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,36 +20,39 @@ const staff = [
 
 export default function Home() {
   const token = localStorage.getItem("tspc_token");
-  const ENABLE_PRELOADER = false;
   const isMobile = window.innerWidth < 768;
   const { user, logout } = useAuth();
   const [fromLogin, setFromLogin] = useState(false);
+  const [showPreloader, setShowPreloader] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   const [loaded, setLoaded] = useState(false);
-  const [preloaderDone, setPreloaderDone] = useState(!ENABLE_PRELOADER);
+  const [showPage, setShowPage] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
 
+
 useEffect(() => {
-  if (!ENABLE_PRELOADER) {
-    setPreloaderDone(true);
-    return;
+  const fromLogin = localStorage.getItem("tspc:fromLogin");
+
+  if (fromLogin === "true") {
+    setShowPreloader(true);
+    setShowPage(false);
+
+    // 🔥 CONSUMIR EL FLAG (ESTO ES LO QUE TE FALTABA)
+    localStorage.removeItem("tspc:fromLogin");
+  } else {
+    setShowPage(true);
   }
 
-  const alreadyPlayed = sessionStorage.getItem("tspc:preloaderPlayed");
-  if (alreadyPlayed) {
-    setPreloaderDone(true);
-  }
 
-  const move = (e) => {
-    mouseX.set(e.clientX - window.innerWidth / 2);
-    mouseY.set(e.clientY - window.innerHeight / 2);
-  };
-
-  window.addEventListener("mousemove", move);
-  return () => window.removeEventListener("mousemove", move);
+    const move = (e) => {
+      mouseX.set(e.clientX - window.innerWidth / 2);
+      mouseY.set(e.clientY - window.innerHeight / 2);
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);  
 }, []);
 
   const bgX = useTransform(mouseX, [-500, 500], [-40, 40]);
@@ -57,22 +61,19 @@ useEffect(() => {
   const coreY = useTransform(mouseY, [-500, 500], [-12, 12]);
 return (
   <>
-  {/* 🚀 PRELOADER (NO SE DESMONTA) */}
-{ENABLE_PRELOADER && !preloaderDone && (
-  <Preloader
-    onFinish={() => {
-      sessionStorage.setItem("tspc:preloaderPlayed", "true");
-      setPreloaderDone(true);
-    }}
-  />
-)}
+    {/* 🚀 PRELOADER */}
+    {showPreloader && (
+      <Preloader
+        onFinish={() => {
+          setShowPreloader(false);
+          setShowPage(true);
+        }}
+      />
+    )}
 
-  {/* 🌍 HOME */}
-  <main
-    className={`transition-opacity duration-700 ${
-      preloaderDone ? "opacity-100" : "opacity-0 pointer-events-none"
-    }`}
-  >
+    {/* 🌍 HOME */}
+    {showPage && (
+      <main className="transition-opacity duration-700 opacity-100">
 
 {/* HERO – GOD MODE ELITE (PRO / SOBRIO / IMPACTANTE) */}
 
@@ -745,18 +746,13 @@ como un profesional?
         Enter Competitive Lobby
       </button>
 
-<button
-  onClick={() =>
-    window.location.assign("https://api.tspcsport.com/auth/discord")
-  }
-  className="flex items-center gap-2 px-4 py-2
-  text-xs uppercase tracking-widest
-  text-white/70 hover:text-[#7B2CFF]
-  transition"
->
-  <i className="fab fa-discord text-sm" />
-  Login with Discord
-</button>
+      <button
+        onClick={() => (window.location.href = "http://localhost:5000/auth/discord")}
+        className="text-xs uppercase tracking-widest text-white/60
+        hover:text-[#7B2CFF] transition"
+      >
+        Login with Discord
+      </button>
     </div>
 
     {/* DIVIDER */}
@@ -774,6 +770,7 @@ como un profesional?
 
 
       </main>
+    )}
   </>
 );
 }
